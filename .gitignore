@@ -1,0 +1,71 @@
+### Backend (Go) ###
+# Binários e builds
+backend/bin/
+backend/dist/
+backend/*.exe
+
+# Dependências e módulos
+backend/go.sum
+backend/vendor/
+
+# Testes e cobertura
+backend/coverage.txt
+backend/coverage.out
+
+# Arquivos gerados pelo IDE (Go)
+backend/.vscode/
+backend/.idea/
+
+
+### Frontend (Flutter) ###
+# Dependências e builds
+frontend/.dart_tool/
+frontend/.packages
+frontend/.flutter-plugins
+frontend/.flutter-plugins-dependencies
+frontend/.metadata
+frontend/build/
+frontend/ios/
+frontend/android/
+frontend/web/
+
+# Cache do Flutter/Dart
+frontend/.pub-cache/
+frontend/pubspec.lock  # Remova se estiver usando versionamento para dependências
+
+# Arquivos de IDE (Flutter)
+frontend/.idea/
+frontend/.vscode/
+
+
+### Docker e Containers ###
+# Volumes de banco de dados (ex: PostgreSQL, MySQL)
+postgres-data/
+mysql-data/
+
+# Arquivos temporários do Docker
+*.dockerignore
+docker-compose.override.yml  # Configurações locais
+
+# Variáveis de ambiente deverão ser enviadas pois se trata de um projeto de exemplo
+# ### Geral ###
+# # Arquivos de ambiente
+# .env
+# .env.local
+# *.env
+
+# Logs e temporários
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Sistemas operacionais
+.DS_Store (Mac)
+Thumbs.db (Windows)
+
+# IDEs/Editores genéricos
+.vscode/
+.idea/
+*.swp
+*.swo
