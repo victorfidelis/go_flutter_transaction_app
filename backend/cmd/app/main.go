@@ -12,8 +12,8 @@ import (
 func main() {
 	router := gin.Default()
 
-	transactionRepo := transactionRepository.NewGormTransactionRepository()
-	transactionServ := transactionService.NewTransactionService(transactionRepo)
+	transactionRepo := transactionRepository.NewTransactionRepositoryGorm()
+	transactionServ := transactionService.NewTransactionServiceImpl(transactionRepo)
 	transactionHand := transactionHandler.NewTransactionHandler(transactionServ)
 
 	routes.RegisterMainRoutes(router)

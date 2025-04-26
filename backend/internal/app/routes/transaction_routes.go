@@ -7,7 +7,7 @@ import (
 )
 
 func RegisterTransactionRoutes(router *gin.Engine, handler *handlers.TransactionHandler) {
-	router.POST("/transaction", handler.CreateTransaction)
-	router.GET("/transaction/:id", handler.GetTransaction)
+	router.POST("/transactions", handler.CreateTransaction)
+	router.GET("/transactions/:id", handler.GetTransaction)
 	router.GET("/transactions", handler.GetAllTransactions)
 }

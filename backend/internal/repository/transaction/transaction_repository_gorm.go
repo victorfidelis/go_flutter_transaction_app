@@ -6,13 +6,13 @@ import (
 	"backend/internal/repository"
 )
 
-type GormTransactionRepository struct{}
+type TransactionRepositoryGorm struct{}
 
-func NewGormTransactionRepository() *GormTransactionRepository {
-	return &GormTransactionRepository{}
+func NewTransactionRepositoryGorm() *TransactionRepositoryGorm {
+	return &TransactionRepositoryGorm{}
 }
 
-func (g *GormTransactionRepository) CreateTransaction(transaction *models.Transaction) error {
+func (g *TransactionRepositoryGorm) CreateTransaction(transaction *models.Transaction) error {
 	gormDb, err := repository.GetGorm()
 	if err != nil {
 		return err
@@ -26,7 +26,7 @@ func (g *GormTransactionRepository) CreateTransaction(transaction *models.Transa
 	return nil
 }
 
-func (g *GormTransactionRepository) GetTransactionByID(id int) (models.Transaction, error) {
+func (g *TransactionRepositoryGorm) GetTransactionByID(id int) (models.Transaction, error) {
 	gormDb, err := repository.GetGorm()
 	if err != nil {
 		return models.Transaction{}, err
@@ -39,7 +39,7 @@ func (g *GormTransactionRepository) GetTransactionByID(id int) (models.Transacti
 	return transaction, nil
 }
 
-func (g *GormTransactionRepository) GetAllTransactions() ([]models.Transaction, error) {
+func (g *TransactionRepositoryGorm) GetAllTransactions() ([]models.Transaction, error) {
 	gormDb, err := repository.GetGorm()
 	if err != nil {
 		return nil, err

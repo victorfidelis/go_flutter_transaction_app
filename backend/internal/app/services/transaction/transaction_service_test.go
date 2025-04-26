@@ -135,7 +135,7 @@ func TestCreateTransaction(t *testing.T) {
 
 	t.Run("Sucesso ao criar transação", func(t *testing.T) {
 		mockRepo := &mocks.MockTransactionRepository{}
-		service := services.NewTransactionService(mockRepo)
+		service := services.NewTransactionServiceImpl(mockRepo)
 
 		mockRepo.On("CreateTransaction", &validTransaction).Return(nil)
 
@@ -146,7 +146,7 @@ func TestCreateTransaction(t *testing.T) {
 
 	t.Run("Erro no repositório", func(t *testing.T) {
 		mockRepo := &mocks.MockTransactionRepository{}
-		service := services.NewTransactionService(mockRepo)
+		service := services.NewTransactionServiceImpl(mockRepo)
 		wantErr := errors.New("erro no banco")
 
 		mockRepo.On("CreateTransaction", &validTransaction).Return(wantErr)
@@ -171,7 +171,7 @@ func TestGetTransactionByID(t *testing.T) {
 
 	t.Run("Sucesso ao buscar transação por ID", func(t *testing.T) {
 		mockRepo := &mocks.MockTransactionRepository{}
-		service := services.NewTransactionService(mockRepo)
+		service := services.NewTransactionServiceImpl(mockRepo)
 
 		mockRepo.On("GetTransactionByID", validID).Return(sampleTransaction, nil)
 
@@ -183,7 +183,7 @@ func TestGetTransactionByID(t *testing.T) {
 
 	t.Run("Erro ao buscar transação por ID", func(t *testing.T) {
 		mockRepo := &mocks.MockTransactionRepository{}
-		service := services.NewTransactionService(mockRepo)
+		service := services.NewTransactionServiceImpl(mockRepo)
 		wantErr := errors.New("transação não encontrada")
 
 		mockRepo.On("GetTransactionByID", invalidID).Return(models.Transaction{}, wantErr)
@@ -195,7 +195,7 @@ func TestGetTransactionByID(t *testing.T) {
 
 	t.Run("Erro ao buscar transação com ID vazio", func(t *testing.T) {
 		mockRepo := &mocks.MockTransactionRepository{}
-		service := services.NewTransactionService(mockRepo)
+		service := services.NewTransactionServiceImpl(mockRepo)
 		wantErr := errors.New("ID inválido")
 
 		mockRepo.On("GetTransactionByID", 0).Return(models.Transaction{}, wantErr)
@@ -225,7 +225,7 @@ func TestGetAllTransactions(t *testing.T) {
 
 	t.Run("Sucesso ao buscar múltiplas as transações", func(t *testing.T) {
 		mockRepo := &mocks.MockTransactionRepository{}
-		service := services.NewTransactionService(mockRepo)
+		service := services.NewTransactionServiceImpl(mockRepo)
 
 		mockRepo.On("GetAllTransactions").Return(transactions, nil)
 
@@ -237,7 +237,7 @@ func TestGetAllTransactions(t *testing.T) {
 
 	t.Run("Sucesso ao buscar lista vazia de transações", func(t *testing.T) {
 		mockRepo := &mocks.MockTransactionRepository{}
-		service := services.NewTransactionService(mockRepo)
+		service := services.NewTransactionServiceImpl(mockRepo)
 
 		mockRepo.On("GetAllTransactions").Return([]models.Transaction{}, nil)
 
@@ -249,7 +249,7 @@ func TestGetAllTransactions(t *testing.T) {
 
 	t.Run("Erro ao buscar transações", func(t *testing.T) {
 		mockRepo := &mocks.MockTransactionRepository{}
-		service := services.NewTransactionService(mockRepo)
+		service := services.NewTransactionServiceImpl(mockRepo)
 		wantErr := errors.New("erro ao buscar transações")
 
 		mockRepo.On("GetAllTransactions").Return([]models.Transaction{}, wantErr)
