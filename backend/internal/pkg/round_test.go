@@ -3,6 +3,8 @@ package round
 import (
 	"math"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestRound(t *testing.T) {
@@ -43,9 +45,13 @@ func TestRound(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := Round(tt.value, tt.precision)
-			if got != tt.expected {
-				t.Errorf("Round(%v, %d) = %v, esperado %v", tt.value, tt.precision, got, tt.expected)
-			}
+			assert.Equal(
+				t,
+				tt.expected,
+				got,
+				"Round(%v, %d) = %v, esperado %v",
+				tt.value, tt.precision, got, tt.expected,
+			)
 		})
 	}
 }
@@ -57,37 +63,29 @@ func TestRoundPrecisionEdgeCases(t *testing.T) {
 	t.Run("Precisão máxima razoável", func(t *testing.T) {
 		got := Round(value, 15) // Próximo ao limite do float64
 		expected := value       // Deve retornar o mesmo valor
-		if got != expected {
-			t.Errorf("Round(%v, 15) = %v, esperado %v", value, got, expected)
-		}
+		assert.Equal(t, expected, got, "Round(%v, 15) = %v, esperado %v", value, got, expected)
 	})
 
 	t.Run("Precisão muito alta", func(t *testing.T) {
 		got := Round(value, 300) // Além do limite do float64
 		expected := value        // Deve retornar o mesmo valor
-		if !math.IsNaN(got) && got != expected {
-			t.Errorf("Round(%v, 300) = %v, esperado %v", value, got, expected)
-		}
+		assert.Equal(t, expected, got, "Round(%v, 300) = %v, esperado %v", value, got, expected)
 	})
 }
 
 func TestRoundSpecialFloatValues(t *testing.T) {
-	tests := []struct {
-		name      string
-		value     float64
-		precision int
-	}{
-		{"NaN", math.NaN(), 2},
-		{"+Inf", math.Inf(1), 2},
-		{"-Inf", math.Inf(-1), 2},
-	}
+	t.Run("NaN", func(t *testing.T) {
+		got := Round(math.NaN(), 2)
+		assert.True(t, math.IsNaN(got), "Deveria retornar NaN")
+	})
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got := Round(tt.value, tt.precision)
-			if !math.IsNaN(got) && !math.IsInf(got, 0) {
-				t.Errorf("Round(%v, %d) deveria retornar um valor especial, mas retornou %v", tt.value, tt.precision, got)
-			}
-		})
-	}
+	t.Run("+Inf", func(t *testing.T) {
+		got := Round(math.Inf(1), 2)
+		assert.Equal(t, math.Inf(1), got, "Deveria manter +Inf")
+	})
+
+	t.Run("-Inf", func(t *testing.T) {
+		got := Round(math.Inf(-1), 2)
+		assert.Equal(t, math.Inf(-1), got, "Deveria manter -Inf")
+	})
 }
