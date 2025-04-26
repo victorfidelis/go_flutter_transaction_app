@@ -10,4 +10,5 @@ func RegisterTransactionRoutes(router *gin.Engine, handler *handlers.Transaction
 	router.POST("/transactions", handler.CreateTransaction)
 	router.GET("/transactions/:id", handler.GetTransaction)
 	router.GET("/transactions", handler.GetAllTransactions)
+	router.GET("/transactions/:id/:country", handler.GetTransaction)
 }

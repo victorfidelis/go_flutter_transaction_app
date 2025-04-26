@@ -2,18 +2,25 @@ package services
 
 import (
 	"backend/internal/app/models"
+	"backend/internal/pkg/exchange"
+	"backend/internal/pkg/round"
 	repository "backend/internal/repository/transaction"
 	"errors"
 	"strings"
 )
 
 type TransactionServiceImpl struct {
-	repository repository.TransactionRepository
+	repository     repository.TransactionRepository
+	exchangeClient exchange.ExchangeClient
 }
 
-func NewTransactionServiceImpl(repository repository.TransactionRepository) *TransactionServiceImpl {
+func NewTransactionServiceImpl(
+	repository repository.TransactionRepository,
+	exchangeClient exchange.ExchangeClient,
+) *TransactionServiceImpl {
 	return &TransactionServiceImpl{
-		repository: repository,
+		repository:     repository,
+		exchangeClient: exchangeClient,
 	}
 }
 
@@ -60,4 +67,40 @@ func (s *TransactionServiceImpl) GetAllTransactions() ([]models.Transaction, err
 		return []models.Transaction{}, err
 	}
 	return transactions, nil
+}
+
+func (s *TransactionServiceImpl) GetTransactionWithExchangeByID(id int, country string) (models.TransactionWithExchange, error) {
+	transaction, err := s.repository.GetTransactionByID(id)
+	if err != nil {
+		return models.TransactionWithExchange{}, err
+	}
+
+	exchange, err := s.exchangeClient.GetRate(transaction.Date, country)
+	if err != nil {
+		return models.TransactionWithExchange{}, err
+	}
+
+	effectiveDate, err := exchange.EffectiveDateParsed()
+	if err != nil {
+		return models.TransactionWithExchange{}, err
+	}
+
+	exchangeRate, err := exchange.ExchangeRateParse()
+	if err != nil {
+		return models.TransactionWithExchange{}, err
+	}
+
+	transactionWithExchange := models.TransactionWithExchange{
+		Id:             transaction.Id,
+		Description:    transaction.Description,
+		Date:           transaction.Date,
+		OriginalValue:  round.Round(transaction.Amount, 2),
+		Country:        exchange.Country,
+		Currency:       exchange.Currency,
+		ExchangeRate:   round.Round(exchangeRate, 2),
+		ConvertedValue: round.Round(transaction.Amount*exchangeRate, 2),
+		EffectiveDate:  effectiveDate,
+	}
+
+	return transactionWithExchange, nil
 }

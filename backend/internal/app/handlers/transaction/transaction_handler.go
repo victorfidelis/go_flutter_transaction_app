@@ -69,3 +69,25 @@ func (h *TransactionHandler) GetAllTransactions(c *gin.Context) {
 
 	c.JSON(http.StatusOK, transactions)
 }
+
+func (h *TransactionHandler) GetTransactionWithExchangeByID(c *gin.Context) {
+	textId := c.Params.ByName("id")
+	id, err := strconv.Atoi(textId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	country := c.Params.ByName("country")
+	transaction, err := h.service.GetTransactionWithExchangeByID(id, country)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, transaction)
+}

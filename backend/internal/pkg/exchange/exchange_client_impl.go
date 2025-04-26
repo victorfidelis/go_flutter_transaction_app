@@ -22,7 +22,11 @@ type bodyRatesRespose struct {
 
 type ExchangeClientImpl struct{}
 
-func (e *ExchangeClientImpl) GetRates(
+func NewExchangeClientImpl() *ExchangeClientImpl {
+	return &ExchangeClientImpl{}
+}
+
+func (e *ExchangeClientImpl) GetRate(
 	date time.Time,
 	country string,
 ) (models.Exchange, error) {
