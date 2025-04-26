@@ -1,11 +1,11 @@
 package routes
 
 import (
-	"backend/controllers"
+	"backend/internal/app/handlers"
 
 	"github.com/gin-gonic/gin"
 )
 
 func RegisterMainRoutes(router *gin.Engine) {
-	router.GET("/", controllers.LoadHome)
+	router.GET("/", handlers.LoadHome)
 }
