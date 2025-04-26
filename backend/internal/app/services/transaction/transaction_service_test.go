@@ -205,3 +205,57 @@ func TestGetTransactionByID(t *testing.T) {
 		assert.Equal(t, wantErr.Error(), err.Error(), "mensagem de erro não corresponde")
 	})
 }
+
+func TestGetAllTransactions(t *testing.T) {
+	now := time.Now()
+	transactions := []models.Transaction{
+		{
+			Id:          1,
+			Description: "Transação 1",
+			Date:        now,
+			Amount:      100.50,
+		},
+		{
+			Id:          2,
+			Description: "Transação 2",
+			Date:        now.Add(24 * time.Hour),
+			Amount:      200.75,
+		},
+	}
+
+	t.Run("Sucesso ao buscar múltiplas as transações", func(t *testing.T) {
+		mockRepo := &mocks.MockTransactionRepository{}
+		service := services.NewTransactionService(mockRepo)
+
+		mockRepo.On("GetAllTransactions").Return(transactions, nil)
+
+		result, err := service.GetAllTransactions()
+
+		assert.NoError(t, err, "nenhum erro esperado")
+		assert.Equal(t, len(transactions), len(result), "resultado não corresponde ao esperado")
+	})
+
+	t.Run("Sucesso ao buscar lista vazia de transações", func(t *testing.T) {
+		mockRepo := &mocks.MockTransactionRepository{}
+		service := services.NewTransactionService(mockRepo)
+
+		mockRepo.On("GetAllTransactions").Return([]models.Transaction{}, nil)
+
+		result, err := service.GetAllTransactions()
+
+		assert.NoError(t, err, "nenhum erro esperado")
+		assert.Empty(t, result, "resultado não deve conter transações")
+	})
+
+	t.Run("Erro ao buscar transações", func(t *testing.T) {
+		mockRepo := &mocks.MockTransactionRepository{}
+		service := services.NewTransactionService(mockRepo)
+		wantErr := errors.New("erro ao buscar transações")
+
+		mockRepo.On("GetAllTransactions").Return([]models.Transaction{}, wantErr)
+
+		_, err := service.GetAllTransactions()
+		assert.Error(t, err, "erro esperado")
+		assert.Equal(t, wantErr.Error(), err.Error(), "mensagem de erro não corresponde")
+	})
+}

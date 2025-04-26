@@ -53,3 +53,11 @@ func (s *TransactionService) GetTransactionByID(id int) (models.Transaction, err
 	}
 	return transaction, nil
 }
+
+func (s *TransactionService) GetAllTransactions() ([]models.Transaction, error) {
+	transactions, err := s.Repository.GetAllTransactions()
+	if err != nil {
+		return []models.Transaction{}, err
+	}
+	return transactions, nil
+}
