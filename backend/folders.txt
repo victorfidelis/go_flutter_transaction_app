@@ -1,0 +1,46 @@
+/backend
+├── /cmd                    # Ponto de entrada da aplicação (main packages)
+│   └── /app                # Aplicação principal (`main.go`)
+├── /internal               # Código interno (não importável por outros projetos)
+│   ├── /app                # Lógica da aplicação (regras de negócio)
+│   │   ├── /handlers       # HTTP handlers (se for API)
+│   │   ├── /services       # Lógica de negócios
+│   │   └── /models         # Modelos de domínio (structs)
+│   ├── /pkg                # Código compartilhado internamente (se necessário)
+│   └── /repository         # Camada de persistência (banco de dados, cache)
+├── /pkg                    # Código importável por outros projetos (bibliotecas)
+│   ├── /logging            # Utilitários de log
+│   ├── /config             # Configurações
+│   └── /utils              # Funções utilitárias
+├── /api                    # Arquivos de API (OpenAPI/Swagger, protobufs)
+├── go.mod                  # Gerenciamento de dependências
+├── go.sum                  # 
+└── README.md               # Documentação do projeto
+
+
+/backend
+├── /cmd                    # Ponto de entrada da aplicação (main packages)
+│   ├── /app                # Aplicação principal (ex: `main.go`)
+│   └── /cli                # CLI tools (se aplicável)
+├── /internal               # Código interno (não importável por outros projetos)
+│   ├── /app                # Lógica da aplicação (regras de negócio)
+│   │   ├── /handlers       # HTTP handlers (se for API)
+│   │   ├── /services       # Lógica de negócios
+│   │   └── /models         # Modelos de domínio (structs)
+│   ├── /pkg                # Código compartilhado internamente (se necessário)
+│   └── /repository         # Camada de persistência (banco de dados, cache)
+├── /pkg                    # Código importável por outros projetos (bibliotecas)
+│   ├── /logging            # Utilitários de log
+│   ├── /config             # Configurações
+│   └── /utils              # Funções utilitárias
+├── /api                    # Arquivos de API (OpenAPI/Swagger, protobufs)
+├── /web                    # Frontend (HTML, CSS, JS) se for aplicação web
+├── /configs                # Arquivos de configuração (YAML, JSON, env)
+├── /scripts                # Scripts auxiliares (deploy, migrações)
+├── /build                  # Build outputs (binários, Dockerfiles)
+├── /deployments            # Configurações de deploy (Kubernetes, Terraform)
+├── /test                   # Testes de integração e e2e
+├── /migrations             # Migrações de banco de dados (SQL, etc.)
+├── go.mod                  # Gerenciamento de dependências
+├── go.sum                  # 
+└── README.md               # Documentação do projeto

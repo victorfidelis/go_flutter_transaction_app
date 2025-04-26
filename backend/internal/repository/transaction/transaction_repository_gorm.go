@@ -2,7 +2,7 @@ package repository
 
 import (
 	"backend/internal/app/models"
-	round "backend/internal/pkg"
+	round "backend/internal/pkg/round"
 	"backend/internal/repository"
 )
 

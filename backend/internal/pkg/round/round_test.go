@@ -1,6 +1,7 @@
-package round
+package round_test
 
 import (
+	round "backend/internal/pkg/round"
 	"math"
 	"testing"
 
@@ -44,7 +45,7 @@ func TestRound(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := Round(tt.value, tt.precision)
+			got := round.Round(tt.value, tt.precision)
 			assert.Equal(
 				t,
 				tt.expected,
@@ -61,31 +62,31 @@ func TestRoundPrecisionEdgeCases(t *testing.T) {
 	value := 1.23456789
 
 	t.Run("Precisão máxima razoável", func(t *testing.T) {
-		got := Round(value, 15) // Próximo ao limite do float64
-		expected := value       // Deve retornar o mesmo valor
+		got := round.Round(value, 15) // Próximo ao limite do float64
+		expected := value             // Deve retornar o mesmo valor
 		assert.Equal(t, expected, got, "Round(%v, 15) = %v, esperado %v", value, got, expected)
 	})
 
 	t.Run("Precisão muito alta", func(t *testing.T) {
-		got := Round(value, 300) // Além do limite do float64
-		expected := value        // Deve retornar o mesmo valor
+		got := round.Round(value, 300) // Além do limite do float64
+		expected := value              // Deve retornar o mesmo valor
 		assert.Equal(t, expected, got, "Round(%v, 300) = %v, esperado %v", value, got, expected)
 	})
 }
 
 func TestRoundSpecialFloatValues(t *testing.T) {
 	t.Run("NaN", func(t *testing.T) {
-		got := Round(math.NaN(), 2)
+		got := round.Round(math.NaN(), 2)
 		assert.True(t, math.IsNaN(got), "Deveria retornar NaN")
 	})
 
 	t.Run("+Inf", func(t *testing.T) {
-		got := Round(math.Inf(1), 2)
+		got := round.Round(math.Inf(1), 2)
 		assert.Equal(t, math.Inf(1), got, "Deveria manter +Inf")
 	})
 
 	t.Run("-Inf", func(t *testing.T) {
-		got := Round(math.Inf(-1), 2)
+		got := round.Round(math.Inf(-1), 2)
 		assert.Equal(t, math.Inf(-1), got, "Deveria manter -Inf")
 	})
 }
