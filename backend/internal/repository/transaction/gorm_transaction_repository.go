@@ -1,9 +1,9 @@
-package repositories
+package repository
 
 import (
 	"backend/internal/app/models"
 	round "backend/internal/pkg"
-	"backend/internal/repositories"
+	"backend/internal/repository"
 )
 
 type GormTransactionRepository struct{}
@@ -13,7 +13,7 @@ func NewGormTransactionRepository() *GormTransactionRepository {
 }
 
 func (g *GormTransactionRepository) CreateTransaction(transaction *models.Transaction) error {
-	gormDb, err := repositories.GetGorm()
+	gormDb, err := repository.GetGorm()
 	if err != nil {
 		return err
 	}
@@ -27,7 +27,7 @@ func (g *GormTransactionRepository) CreateTransaction(transaction *models.Transa
 }
 
 func (g *GormTransactionRepository) GetTransactionByID(id int) (models.Transaction, error) {
-	gormDb, err := repositories.GetGorm()
+	gormDb, err := repository.GetGorm()
 	if err != nil {
 		return models.Transaction{}, err
 	}
@@ -40,7 +40,7 @@ func (g *GormTransactionRepository) GetTransactionByID(id int) (models.Transacti
 }
 
 func (g *GormTransactionRepository) GetAllTransactions() ([]models.Transaction, error) {
-	gormDb, err := repositories.GetGorm()
+	gormDb, err := repository.GetGorm()
 	if err != nil {
 		return nil, err
 	}

@@ -1,7 +1,10 @@
 package main
 
 import (
+	transactionHandler "backend/internal/app/handlers/transaction"
 	"backend/internal/app/routes"
+	transactionService "backend/internal/app/services/transaction"
+	transactionRepository "backend/internal/repository/transaction"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,20 +12,12 @@ import (
 func main() {
 	router := gin.Default()
 
-	// err := repositories.InitDB(repositories.DatabaseConfig{
-	// 	Host:     os.Getenv("DB_HOST"),
-	// 	User:     os.Getenv("DB_USER"),
-	// 	Password: os.Getenv("DB_PASSWORD"),
-	// 	Name:     os.Getenv("DB_NAME"),
-	// 	Port:     os.Getenv("DB_PORT"),
-	// })
-
-	// if err != nil {
-	// 	panic("Falha ao conectar ao banco de dados: " + err.Error())
-	// }
+	transactionRepo := transactionRepository.NewGormTransactionRepository()
+	transactionServ := transactionService.NewTransactionService(transactionRepo)
+	transactionHand := transactionHandler.NewTransactionHandler(transactionServ)
 
 	routes.RegisterMainRoutes(router)
-	routes.RegisterTransactionRoutes(router)
+	routes.RegisterTransactionRoutes(router, transactionHand)
 
 	router.Run(":8080")
 }

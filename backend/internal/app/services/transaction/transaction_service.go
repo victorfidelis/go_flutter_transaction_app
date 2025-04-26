@@ -2,16 +2,16 @@ package services
 
 import (
 	"backend/internal/app/models"
-	repositories "backend/internal/repositories/transaction"
+	repository "backend/internal/repository/transaction"
 	"errors"
 	"strings"
 )
 
 type TransactionService struct {
-	Repository repositories.TransactionRepository
+	Repository repository.TransactionRepository
 }
 
-func NewTransactionService(repository repositories.TransactionRepository) *TransactionService {
+func NewTransactionService(repository repository.TransactionRepository) *TransactionService {
 	return &TransactionService{
 		Repository: repository,
 	}
