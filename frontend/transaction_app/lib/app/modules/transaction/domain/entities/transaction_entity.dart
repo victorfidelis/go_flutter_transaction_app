@@ -1,11 +1,11 @@
 class TransactionEntity {
-  final String id;
+  final int id;
   final String description;
   final double amount;
   final DateTime date;
 
   TransactionEntity({
-    required this.id,
+    this.id = 0,
     required this.description,
     required this.amount,
     required this.date,
