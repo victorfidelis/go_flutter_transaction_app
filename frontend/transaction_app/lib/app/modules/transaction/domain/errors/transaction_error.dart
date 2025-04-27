@@ -1,6 +1,12 @@
 
-class TransactionError implements Exception {
+class CreateTransactionError implements Exception {
   final String message;
   
-  TransactionError(this.message);
+  CreateTransactionError(this.message);
+}
+
+class GetTransactionError implements Exception {
+  final String message;
+  
+  GetTransactionError(this.message);
 }

@@ -4,18 +4,18 @@ import 'package:transaction_app/app/modules/transaction/domain/entities/transact
 import 'package:transaction_app/app/modules/transaction/domain/errors/validation_error.dart';
 import 'package:transaction_app/app/modules/transaction/domain/repositories/transaction_repository.dart';
 
-class AddTransactionUsecase {
+class CreateTransactionUsecase {
   final TransactionRepository repository;
-  AddTransactionUsecase(this.repository);
+  CreateTransactionUsecase(this.repository);
 
   Future<Result<TransactionEntity>> call(TransactionEntity transaction) async {
 
     final errors = _validateTransaction(transaction);
     if (errors.isNotEmpty) {
-      return Result.failure(ValidationError(errors));
+      return Result.error(ValidationError(errors));
     }
 
-    return await repository.addTransaction(transaction);
+    return await repository.createTransaction(transaction);
   }
 }
 

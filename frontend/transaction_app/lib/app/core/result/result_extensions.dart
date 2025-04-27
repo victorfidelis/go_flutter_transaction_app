@@ -5,13 +5,13 @@ extension ResultExtensions<T> on Result<T> {
     required R Function(T) onSuccess,
     required R Function(Exception) onFailure,
   }) {
-    if (this is Success<T>) {
-      return onSuccess((this as Success<T>).value);
+    if (this is Ok<T>) {
+      return onSuccess((this as Ok<T>).value);
     } else {
-      return onFailure((this as Failure<T>).error);
+      return onFailure((this as Error<T>).error);
     }
   }
 
-  bool get isSuccess => this is Success<T>;
-  bool get isFailure => this is Failure<T>;
+  bool get isOk => this is Ok<T>;
+  bool get isError => this is Error<T>;
 }

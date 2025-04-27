@@ -25,4 +25,13 @@ class TransactionModel extends TransactionEntity {
       'date': date.toIso8601String(),
     };
   }
+
+  factory TransactionModel.fromEntity(TransactionEntity entity) {
+    return TransactionModel(
+      id: entity.id,
+      description: entity.description,
+      amount: entity.amount,
+      date: entity.date,
+    );
+  }
 }
