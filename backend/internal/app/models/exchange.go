@@ -10,7 +10,7 @@ type Exchange struct {
 	Country             string `json:"country"`
 	Currency            string `json:"rate"`
 	CountryCurrencyDesc string `json:"country_currency_desc"`
-	ExchangeRate        string `json:"exchange_rate_type"`
+	ExchangeRate        string `json:"exchange_rate"`
 	EffectiveDate       string `json:"effective_date"`
 }
 

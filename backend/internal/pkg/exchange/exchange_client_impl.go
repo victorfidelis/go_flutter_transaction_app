@@ -30,7 +30,6 @@ func (e *ExchangeClientImpl) GetRate(
 	date time.Time,
 	country string,
 ) (models.Exchange, error) {
-
 	filter := buildFilter(date, country)
 	url := baseUrl + ratesEndpoint + "?" + pageNumber + "&" + pageSize + "&" +
 		fields + "&" + sort + "&" + filter
@@ -59,5 +58,5 @@ func buildFilter(date time.Time, country string) string {
 	layout := "2006-01-02"
 	startDateStr := startDate.Format(layout)
 	endDateStr := date.Format(layout)
-	return "country:eq:" + country + ",effective_date:gte:" + startDateStr + ",effective_date:lte:" + endDateStr
+	return "filter=country:eq:" + country + ",effective_date:gte:" + startDateStr + ",effective_date:lte:" + endDateStr
 }
