@@ -5,11 +5,9 @@ import (
 	"backend/internal/pkg/exchange"
 	"backend/internal/pkg/round"
 	repository "backend/internal/repository/transaction"
-	"backend/pkg/logging"
 	"errors"
+	"log"
 	"strings"
-
-	"go.uber.org/zap"
 )
 
 type TransactionServiceImpl struct {
@@ -28,15 +26,15 @@ func NewTransactionServiceImpl(
 }
 
 func (s *TransactionServiceImpl) CreateTransaction(transaction *models.Transaction) error {
-	logging.Logger.Info("Iniciando serviço de criação de transação", zap.String("description", transaction.Description))
+	log.Println("Iniciando serviço de criação de transação.", "description: ", transaction.Description)
 	if err := ValidateTransaction(transaction); err != nil {
-		logging.Logger.Error("Erro ao validar transação", zap.String("description", transaction.Description), zap.Error(err))
+		log.Println("Erro ao validar transação.", "description:", transaction.Description, "error:", err.Error())
 		return err
 	}
 
 	err := s.repository.CreateTransaction(transaction)
 	if err != nil {
-		logging.Logger.Error("Erro ao criar transação", zap.String("description", transaction.Description), zap.Error(err))
+		log.Println("Erro ao criar transação.", "description", transaction.Description, "error:", err.Error())
 		return err
 	}
 	return nil
@@ -60,48 +58,48 @@ func ValidateTransaction(transaction *models.Transaction) error {
 }
 
 func (s *TransactionServiceImpl) GetTransactionByID(id int) (models.Transaction, error) {
-	logging.Logger.Info("Iniciando serviço de busca de transação", zap.Int("id", id))
+	log.Println("Iniciando serviço de busca de transação.", "id", id)
 	transaction, err := s.repository.GetTransactionByID(id)
 	if err != nil {
-		logging.Logger.Error("Erro ao buscar transação", zap.Int("id", id), zap.Error(err))
+		log.Println("Erro ao buscar transação", "id", id, "error:", err.Error())
 		return models.Transaction{}, err
 	}
 	return transaction, nil
 }
 
 func (s *TransactionServiceImpl) GetAllTransactions() ([]models.Transaction, error) {
-	logging.Logger.Info("Iniciando serviço de busca de todas as transações")
+	log.Println("Iniciando serviço de busca de todas as transações")
 	transactions, err := s.repository.GetAllTransactions()
 	if err != nil {
-		logging.Logger.Error("Erro ao buscar todas as transações", zap.Error(err))
+		log.Println("Erro ao buscar todas as transações.", "error:", err.Error())
 		return []models.Transaction{}, err
 	}
 	return transactions, nil
 }
 
 func (s *TransactionServiceImpl) GetTransactionWithExchangeByID(id int, country string) (models.TransactionWithExchange, error) {
-	logging.Logger.Info("Iniciando serviço de busca de transação com câmbio", zap.Int("id", id), zap.String("country", country))
+	log.Println("Iniciando serviço de busca de transação com câmbio.", "id:", id, "country:", country)
 	transaction, err := s.repository.GetTransactionByID(id)
 	if err != nil {
-		logging.Logger.Error("Erro ao buscar transação", zap.Int("id", id), zap.Error(err))
+		log.Println("Erro ao buscar transação.", "id:", id, "error:", err.Error())
 		return models.TransactionWithExchange{}, err
 	}
 
 	exchange, err := s.exchangeClient.GetRate(transaction.Date, country)
 	if err != nil {
-		logging.Logger.Error("Erro ao buscar taxa de câmbio", zap.Int("id", id), zap.String("country", country), zap.Error(err))
+		log.Println("Erro ao buscar taxa de câmbio.", "id:", id, "country:", country, "error:", err.Error())
 		return models.TransactionWithExchange{}, err
 	}
 
 	effectiveDate, err := exchange.EffectiveDateParsed()
 	if err != nil {
-		logging.Logger.Error("Erro ao parsear data efetiva", zap.Int("id", id), zap.String("country", country), zap.Error(err))
+		log.Println("Erro ao parsear data efetiva.", "id:", id, "country:", country, "error:", err.Error())
 		return models.TransactionWithExchange{}, err
 	}
 
 	exchangeRate, err := exchange.ExchangeRateParse()
 	if err != nil {
-		logging.Logger.Error("Erro ao parsear taxa de câmbio", zap.Int("id", id), zap.String("country", country), zap.Error(err))
+		log.Println("Erro ao parsear taxa de câmbio.", "id:", id, "country:", country, "error:", err.Error())
 		return models.TransactionWithExchange{}, err
 	}
 

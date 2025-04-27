@@ -267,3 +267,74 @@ func TestGetAllTransactions(t *testing.T) {
 		assert.Equal(t, wantErr.Error(), err.Error(), "mensagem de erro não corresponde")
 	})
 }
+
+func TestGetTransactionWithExchangeByID(t *testing.T) {
+
+	mockTransaction := models.Transaction{
+		Id:          1,
+		Description: "Compra internacional",
+		Date:        time.Date(2023, 10, 1, 0, 0, 0, 0, time.UTC),
+		Amount:      200.00,
+	}
+
+	mockExchange := models.Exchange{
+		RecordDate:          "2023-10-01",
+		Country:             "Brazil",
+		Currency:            "Real",
+		CountryCurrencyDesc: "Brazil-Real",
+		ExchangeRate:        "5.0",
+		EffectiveDate:       "2023-10-01",
+	}
+
+	t.Run("Sucesso ao buscar transação com câmbio", func(t *testing.T) {
+		mockRepo := &mocks.MockTransactionRepository{}
+		mockExchangeClient := &mocks.MockExchangeClient{}
+		service := services.NewTransactionServiceImpl(mockRepo, mockExchangeClient)
+
+		mockRepo.On("GetTransactionByID", mockTransaction.Id).Return(mockTransaction, nil)
+		mockExchangeClient.On("GetRate", mockTransaction.Date, "Brazil").Return(mockExchange, nil)
+
+		result, err := service.GetTransactionWithExchangeByID(mockTransaction.Id, "Brazil")
+
+		assert.NoError(t, err, "nenhum erro esperado")
+		assert.Equal(t, mockTransaction.Id, result.Id)
+		assert.Equal(t, mockTransaction.Description, result.Description)
+		assert.Equal(t, mockTransaction.Date, result.Date)
+		assert.Equal(t, "Brazil", result.Country)
+		assert.Equal(t, "Real", result.Currency)
+		assert.Equal(t, 5.0, result.ExchangeRate)
+		assert.Equal(t, 200.00, result.OriginalValue)
+		assert.Equal(t, 1000.00, result.ConvertedValue)
+	})
+
+	t.Run("Erro ao buscar transação no repositório", func(t *testing.T) {
+		mockRepo := &mocks.MockTransactionRepository{}
+		mockExchangeClient := &mocks.MockExchangeClient{}
+		service := services.NewTransactionServiceImpl(mockRepo, mockExchangeClient)
+		wantErr := errors.New("transação não encontrada")
+
+		mockRepo.On("GetTransactionByID", mockTransaction.Id).Return(models.Transaction{}, wantErr)
+
+		result, err := service.GetTransactionWithExchangeByID(mockTransaction.Id, "Brazil")
+
+		assert.Error(t, err, "esperado erro")
+		assert.Equal(t, models.TransactionWithExchange{}, result, "esperado resultado vazio")
+		assert.Equal(t, wantErr, err, "erro esperado não corresponde")
+	})
+
+	t.Run("Erro ao buscar taxa de câmbio", func(t *testing.T) {
+		mockRepo := &mocks.MockTransactionRepository{}
+		mockExchangeClient := &mocks.MockExchangeClient{}
+		service := services.NewTransactionServiceImpl(mockRepo, mockExchangeClient)
+		wantErr := errors.New("erro ao buscar taxa")
+
+		mockRepo.On("GetTransactionByID", mockTransaction.Id).Return(mockTransaction, nil)
+		mockExchangeClient.On("GetRate", mockTransaction.Date, "Brazil").Return(models.Exchange{}, wantErr)
+
+		result, err := service.GetTransactionWithExchangeByID(mockTransaction.Id, "Brazil")
+
+		assert.Error(t, err, "esperado erro")
+		assert.Equal(t, models.TransactionWithExchange{}, result, "esperado resultado vazio")
+		assert.Equal(t, wantErr, err, "erro esperado não corresponde")
+	})
+}

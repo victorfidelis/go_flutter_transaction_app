@@ -3,12 +3,11 @@ package handlers
 import (
 	"backend/internal/app/models"
 	services "backend/internal/app/services/transaction"
-	"backend/pkg/logging"
+	"log"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 )
 
 type TransactionHandler struct {
@@ -22,34 +21,34 @@ func NewTransactionHandler(service services.TransactionService) *TransactionHand
 }
 
 func (h *TransactionHandler) CreateTransaction(c *gin.Context) {
-	logging.Logger.Info("Requisição recebida", zap.String("path", c.Request.URL.Path))
+	log.Println("Requisição recebida.", "path:", c.Request.URL.Path)
 	var transaction models.Transaction
 	if err := c.ShouldBindJSON(&transaction); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
-		logging.Logger.Warn("Chamada incorreta", zap.String("message", err.Error()))
+		log.Println("Chamada incorreta.", "message:", err.Error())
 		return
 	}
 	if err := h.service.CreateTransaction(&transaction); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
-		logging.Logger.Error("Falha interna", zap.String("message", err.Error()))
+		log.Println("Falha interna.", "message", err.Error())
 		return
 	}
 	c.JSON(http.StatusCreated, transaction)
 }
 
 func (h *TransactionHandler) GetTransaction(c *gin.Context) {
-	logging.Logger.Info("Requisição recebida", zap.String("path", c.Request.URL.Path))
+	log.Println("Requisição recebida.", "path:", c.Request.URL.Path)
 	textId := c.Params.ByName("id")
 	id, err := strconv.Atoi(textId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
-		logging.Logger.Warn("Chamada incorreta", zap.String("message", err.Error()))
+		log.Println("Chamada incorreta.", "message", err.Error())
 		return
 	}
 
@@ -58,7 +57,7 @@ func (h *TransactionHandler) GetTransaction(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
-		logging.Logger.Error("Falha interna", zap.String("message", err.Error()))
+		log.Println("Falha interna.", "message:", err.Error())
 		return
 	}
 
@@ -66,13 +65,13 @@ func (h *TransactionHandler) GetTransaction(c *gin.Context) {
 }
 
 func (h *TransactionHandler) GetAllTransactions(c *gin.Context) {
-	logging.Logger.Info("Requisição recebida", zap.String("path", c.Request.URL.Path))
+	log.Println("Requisição recebida.", "path:", c.Request.URL.Path)
 	transactions, err := h.service.GetAllTransactions()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
-		logging.Logger.Error("Falha interna", zap.String("message", err.Error()))
+		log.Println("Falha interna.", "message:", err.Error())
 		return
 	}
 
@@ -80,14 +79,14 @@ func (h *TransactionHandler) GetAllTransactions(c *gin.Context) {
 }
 
 func (h *TransactionHandler) GetTransactionWithExchangeByID(c *gin.Context) {
-	logging.Logger.Info("Requisição recebida", zap.String("path", c.Request.URL.Path))
+	log.Println("Requisição recebida.", "path:", c.Request.URL.Path)
 	textId := c.Params.ByName("id")
 	id, err := strconv.Atoi(textId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
-		logging.Logger.Warn("Chamada incorreta", zap.String("message", err.Error()))
+		log.Println("Chamada incorreta.", "message:", err.Error())
 		return
 	}
 
@@ -97,7 +96,7 @@ func (h *TransactionHandler) GetTransactionWithExchangeByID(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
-		logging.Logger.Error("Falha interna", zap.String("message", err.Error()))
+		log.Println("Falha interna.", "message:", err.Error())
 		return
 	}
 

@@ -176,3 +176,84 @@ func TestGetAllTransactions(t *testing.T) {
 		assert.Equal(t, http.StatusInternalServerError, recorder.Code)
 	})
 }
+
+func TestGetTransactionWithExchangeByID(t *testing.T) {
+	validTransactionWithExchange := models.TransactionWithExchange{
+		Id:             1,
+		Description:    "Test Transaction",
+		Date:           time.Date(2023, 10, 1, 0, 0, 0, 0, time.UTC),
+		OriginalValue:  100.0,
+		Country:        "Brazil",
+		Currency:       "Real",
+		ExchangeRate:   5.0,
+		ConvertedValue: 500.0,
+		EffectiveDate:  time.Now(),
+	}
+
+	t.Run("Sucesso ao consultar transação com exchange", func(t *testing.T) {
+		mockService := new(mocks.MockTransactionService)
+		handler := handlers.NewTransactionHandler(mockService)
+
+		mockService.On("GetTransactionWithExchangeByID", 1, "Brazil").Return(validTransactionWithExchange, nil)
+
+		context, recorder, _ := testhelpers.BuildTestContextGin(
+			"GET",
+			"/transactions/1/Brazil",
+			nil,
+			gin.Param{Key: "id", Value: "1"},
+			gin.Param{Key: "country", Value: "Brazil"},
+		)
+
+		handler.GetTransactionWithExchangeByID(context)
+
+		assert.Equal(t, http.StatusOK, recorder.Code)
+
+		var response models.TransactionWithExchange
+		json.Unmarshal(recorder.Body.Bytes(), &response)
+		assert.Equal(t, validTransactionWithExchange.Id, response.Id)
+		assert.Equal(t, validTransactionWithExchange.Description, response.Description)
+		assert.Equal(t, validTransactionWithExchange.OriginalValue, response.OriginalValue)
+		assert.Equal(t, validTransactionWithExchange.Country, response.Country)
+		assert.Equal(t, validTransactionWithExchange.Currency, response.Currency)
+		assert.Equal(t, validTransactionWithExchange.ExchangeRate, response.ExchangeRate)
+		assert.Equal(t, validTransactionWithExchange.ConvertedValue, response.ConvertedValue)
+		assert.Equal(t, validTransactionWithExchange.Date.Format(time.RFC3339), response.Date.Format(time.RFC3339))
+		assert.Equal(t, validTransactionWithExchange.EffectiveDate.Format(time.RFC3339), response.EffectiveDate.Format(time.RFC3339))
+	})
+
+	t.Run("Erro ao consultar transação com exchange", func(t *testing.T) {
+		mockService := new(mocks.MockTransactionService)
+		handler := handlers.NewTransactionHandler(mockService)
+
+		mockService.On("GetTransactionWithExchangeByID", 1, "USA").Return(models.TransactionWithExchange{}, errors.New("error"))
+
+		context, recorder, _ := testhelpers.BuildTestContextGin(
+			"GET",
+			"/transactions/1/USA",
+			nil,
+			gin.Param{Key: "id", Value: "1"},
+			gin.Param{Key: "country", Value: "USA"},
+		)
+
+		handler.GetTransactionWithExchangeByID(context)
+
+		assert.Equal(t, http.StatusInternalServerError, recorder.Code)
+	})
+
+	t.Run("Erro ao consultar transação com ID inválido", func(t *testing.T) {
+		mockService := new(mocks.MockTransactionService)
+		handler := handlers.NewTransactionHandler(mockService)
+
+		context, recorder, _ := testhelpers.BuildTestContextGin(
+			"GET",
+			"/transactions/invalid/USA",
+			nil,
+			gin.Param{Key: "id", Value: "invalid"},
+			gin.Param{Key: "country", Value: "USA"},
+		)
+
+		handler.GetTransactionWithExchangeByID(context)
+
+		assert.Equal(t, http.StatusBadRequest, recorder.Code)
+	})
+}

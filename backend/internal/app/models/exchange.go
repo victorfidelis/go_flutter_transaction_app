@@ -8,7 +8,7 @@ import (
 type Exchange struct {
 	RecordDate          string `json:"record_date"`
 	Country             string `json:"country"`
-	Currency            string `json:"rate"`
+	Currency            string `json:"currency"`
 	CountryCurrencyDesc string `json:"country_currency_desc"`
 	ExchangeRate        string `json:"exchange_rate"`
 	EffectiveDate       string `json:"effective_date"`

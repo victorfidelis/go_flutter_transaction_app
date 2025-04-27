@@ -25,6 +25,6 @@ func (m *MockTransactionService) GetAllTransactions() ([]models.Transaction, err
 	return args.Get(0).([]models.Transaction), args.Error(1)
 }
 func (m *MockTransactionService) GetTransactionWithExchangeByID(id int, country string) (models.TransactionWithExchange, error) {
-	args := m.Called()
+	args := m.Called(id, country)
 	return args.Get(0).(models.TransactionWithExchange), args.Error(1)
 }
