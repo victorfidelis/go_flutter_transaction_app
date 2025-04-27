@@ -1,13 +1,13 @@
 import 'package:transaction_app/app/modules/transaction/domain/entities/transaction_entity.dart';
 
-class TransactionWithEnchangeEntity extends TransactionEntity {
+class TransactionWithExchangeEntity extends TransactionEntity {
   final String country;
   final String currency;
   final double exchangeRate;
   final double convertedAmount;
   final DateTime effectiveDate;
 
-  TransactionWithEnchangeEntity({
+  TransactionWithExchangeEntity({
     required super.id,
     required super.description,
     required super.amount,

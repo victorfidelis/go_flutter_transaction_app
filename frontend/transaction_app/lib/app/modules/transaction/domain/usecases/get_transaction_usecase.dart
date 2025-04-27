@@ -7,7 +7,7 @@ class GetTransactionUsecase {
 
   GetTransactionUsecase(this.transactionRepository);
 
-  Future<Result<TransactionWithEnchangeEntity>> call(int id, String country) async {
+  Future<Result<TransactionWithExchangeEntity>> call(int id, String country) async {
     return await transactionRepository.getTransaction(id, country);
   }
 }
