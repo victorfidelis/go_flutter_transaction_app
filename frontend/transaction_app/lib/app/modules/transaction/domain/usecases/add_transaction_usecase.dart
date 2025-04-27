@@ -8,7 +8,7 @@ class AddTransactionUsecase {
   final TransactionRepository repository;
   AddTransactionUsecase(this.repository);
 
-  Future<Result<TransactionEntity>> execute(TransactionEntity transaction) async {
+  Future<Result<TransactionEntity>> call(TransactionEntity transaction) async {
 
     final errors = _validateTransaction(transaction);
     if (errors.isNotEmpty) {
