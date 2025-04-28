@@ -2,23 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/widgets/custom_date_field.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/widgets/custom_text_filed.dart';
 
-class NewTransactionView extends StatefulWidget {
+class NewTransactionView extends StatelessWidget {
   const NewTransactionView({super.key});
-
-  @override
-  State<NewTransactionView> createState() => _NewTransactionViewState();
-}
-
-class _NewTransactionViewState extends State<NewTransactionView> {
-  final _descriptionController = TextEditingController();
-  final _amountController = TextEditingController();
-
-  @override
-  void dispose() {
-    _descriptionController.dispose();
-    _amountController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,12 +57,10 @@ class _NewTransactionViewState extends State<NewTransactionView> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         CustomTextFiled(
-          controller: _descriptionController,
           labelText: 'Descrição',
         ),
         const SizedBox(height: 16),
         CustomTextFiled(
-          controller: _amountController,
           hintText: 'Valor (USD)',
           isMoney: true,
         ),
