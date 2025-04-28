@@ -5,5 +5,5 @@ class DateFormatter {
     final year = date.year.toString();
 
     return '$day/$month/$year';
-  }
-}
+  } 
+} 

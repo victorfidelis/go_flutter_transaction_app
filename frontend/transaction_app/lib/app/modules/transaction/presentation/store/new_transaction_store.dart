@@ -26,10 +26,16 @@ abstract class NewTransactionStoreBase with Store {
   void setLoading(bool value) => isLoading = value;
 
   String description = '';
-  void setDescription(String value) => description = value;
+  void setDescription(String value) => description = value.trim();
 
   double amount = 0.0;
-  void setAmount(double value) => amount = value;
+  void setAmount(String value) {
+    if (value.isEmpty) {
+      amount = 0;
+    } else {
+      amount = double.parse(value);
+    }
+  }
 
   DateTime? date;
   void setDate(DateTime value) => date = value;
@@ -76,15 +82,15 @@ abstract class NewTransactionStoreBase with Store {
 
   void _handleResult(Result result) {
     if (result.isError) {
-      if (result is ValidationError) {
-        final validationError = result as ValidationError;
-        setDescriptionError(validationError.errors['description']);
-        setAmountError(validationError.errors['amount']);
-        setDateError(validationError.errors['date']);
+      final error = (result as Error).error;
+      if (error is ValidationError) {
+        setDescriptionError(error.errors['description']);
+        setAmountError(error.errors['amount']);
+        setDateError(error.errors['date']);
         _resetGenericErrorsOnly();
       } else {
-        if (result is CreateTransactionError) {
-          setError((result as CreateTransactionError).message);
+        if (error is CreateTransactionError) {
+          setError(error.message);
         } else {
           setError('Um erro inesperado ocorreu. Tente novamente mais tarde.');
         }
@@ -110,5 +116,4 @@ abstract class NewTransactionStoreBase with Store {
   void _resetGenericErrorsOnly() {
     setError(null);
   }
-
 }

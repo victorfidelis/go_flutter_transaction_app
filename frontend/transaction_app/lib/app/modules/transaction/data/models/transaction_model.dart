@@ -22,7 +22,7 @@ class TransactionModel extends TransactionEntity {
       'id': id,
       'description': description,
       'amount': amount,
-      'date': date.toIso8601String(),
+      'date': date.toUtc().toIso8601String(),
     };
   }
 

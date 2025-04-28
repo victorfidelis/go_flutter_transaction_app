@@ -5,14 +5,21 @@ class CustomDateField extends StatefulWidget {
   final String? labelText;
   final DateTime? date;
   final String? errorText;
+  final Function(DateTime)? onChanged;
 
-  const CustomDateField({super.key, this.labelText, this.date, this.errorText});
+  const CustomDateField({
+    super.key,
+    this.labelText,
+    this.date,
+    this.errorText,
+    this.onChanged,
+  });
 
   @override
   State<CustomDateField> createState() => _CustomDateFieldState();
 }
 
-class _CustomDateFieldState extends State<CustomDateField> { 
+class _CustomDateFieldState extends State<CustomDateField> {
   DateTime? date;
 
   @override
@@ -59,6 +66,9 @@ class _CustomDateFieldState extends State<CustomDateField> {
       setState(() {
         date = picked;
       });
+      if (widget.onChanged != null) {
+        widget.onChanged!(date!);
+      }
     }
   }
 }

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:transaction_app/app/core/widgets/custom_loading.dart';
+import 'package:transaction_app/app/core/widgets/custom_text_error.dart';
+import 'package:transaction_app/app/modules/transaction/presentation/store/new_transaction_store.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/widgets/custom_date_field.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/widgets/custom_text_filed.dart';
 
 class NewTransactionView extends StatelessWidget {
-  const NewTransactionView({super.key});
+  final NewTransactionStore store;
+
+  const NewTransactionView({super.key, required this.store});
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +32,7 @@ class NewTransactionView extends StatelessWidget {
   }
 
   Widget _buildMobileForm() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: _buildForm(),
-    );
+    return Padding(padding: const EdgeInsets.all(16.0), child: _buildForm());
   }
 
   Widget _buildDesktopForm() {
@@ -56,19 +59,66 @@ class NewTransactionView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        CustomTextFiled(
-          labelText: 'Descrição',
+        Observer(
+          builder: (context) {
+            return CustomTextFiled(
+              labelText: 'Descrição',
+              errorText: store.descriptionError,
+              onChanged: store.setDescription,
+            );
+          },
         ),
         const SizedBox(height: 16),
-        CustomTextFiled(
-          hintText: 'Valor (USD)',
-          isMoney: true,
+        Observer(
+          builder: (context) {
+            return CustomTextFiled(
+              hintText: 'Valor (USD)',
+              isMoney: true,
+              errorText: store.amountError,
+              onChanged: store.setAmount,
+            );
+          },
         ),
         const SizedBox(height: 16),
-        CustomDateField(labelText: 'Data'),
-        const SizedBox(height: 24),
-        ElevatedButton(onPressed: () {}, child: const Text('Salvar Transação')),
+        Observer(
+          builder: (context) {
+            return CustomDateField(
+              labelText: 'Data',
+              errorText: store.dateError,
+              onChanged: store.setDate,
+            );
+          },
+        ),
+        Observer(
+          builder: (context) {
+            return _buildGenericErrorMessage();
+          }
+        ),
+        Observer(
+          builder: (context) {
+            if (store.isLoading) {
+              return Center(child: CustomLoading());
+            }
+            if (store.transactionCreated) {
+              return SizedBox();
+            }
+            return ElevatedButton(
+              onPressed: store.createTransaction,
+              child: const Text('Salvar Transação'),
+            );
+          },
+        ),
       ],
+    );
+  }
+
+  Widget _buildGenericErrorMessage() {
+    if (store.error == null) {
+      return SizedBox(height: 24);
+    }
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 20),
+      child: CustomTextError(message: store.error!),
     );
   }
 }

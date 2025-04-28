@@ -4,6 +4,7 @@ import (
 	transactionHandler "backend/internal/app/handlers/transaction"
 	"backend/internal/app/routes"
 	transactionService "backend/internal/app/services/transaction"
+	"backend/internal/middleware"
 	"backend/internal/pkg/exchange"
 	transactionRepository "backend/internal/repository/transaction"
 	"log"
@@ -15,6 +16,8 @@ func main() {
 	log.Println("Iniciando aplicação...")
 
 	router := gin.Default()
+
+	router.Use(middleware.Cors())
 
 	transactionRepo := transactionRepository.NewTransactionRepositoryGorm()
 	exchangeClient := exchange.NewExchangeClientImpl()

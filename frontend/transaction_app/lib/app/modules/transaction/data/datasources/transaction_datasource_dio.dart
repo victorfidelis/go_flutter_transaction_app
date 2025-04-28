@@ -22,7 +22,7 @@ class TransactionDatasourceDio implements TransactionDatasource {
         '/transactions',
         data: transactionModel.toJson(),
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         return Result.ok(TransactionModel.fromJson(response.data));
       } else {
         return Result.error(
@@ -32,7 +32,7 @@ class TransactionDatasourceDio implements TransactionDatasource {
         );
       }
     } on DioException catch (e) {
-      return Result.error(CreateTransactionError('Erro obter transação: ${e.message}'));
+      return Result.error(CreateTransactionError('Erro criar transação: ${e.message}'));
     } catch (e) {
       return Result.error(
         CreateTransactionError('Erro ao criar transação: $e'),

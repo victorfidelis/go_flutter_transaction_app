@@ -24,17 +24,15 @@ Map<String, String> _validateTransaction(TransactionEntity transaction) {
 
   if (transaction.description.isEmpty) {
     errors['description'] = 'Descrição é obrigatória';
-  }
-  if (transaction.description.length > 50) {
+  } else if (transaction.description.length > 50) {
     errors['description'] = 'Descrição deve ter no máximo 50 caracteres';
-  }
-  if (TextValidations.isAlphanumWithSpaces(transaction.description)) {
+  } else if (!TextValidations.isAlphanumWithSpaces(transaction.description)) {
     errors['description'] = 'Descrição deve conter apenas letras e números';
   }
+  
   if (transaction.amount <= 0) {
     errors['amount'] = 'Valor deve ser maior que zero';
-  }
-  if (transaction.amount > 99999.99) {
+  } else if (transaction.amount > 99999.99) {
     errors['amount'] = 'Valor deve ser menor que USD 99.999,99';
   }
 
