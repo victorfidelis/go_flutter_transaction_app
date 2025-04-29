@@ -12,16 +12,16 @@ import 'package:transaction_app/app/modules/transaction/presentation/views/trans
 class TransactionModule extends Module {
   @override
   void binds(i) {
-    i.addSingleton<TransactionDatasource>(
+    i.add<TransactionDatasource>(
       () => TransactionDatasourceDio(DioConfig.get()),
     );
-    i.addSingleton<TransactionRepository>(
+    i.add<TransactionRepository>(
       () => TransactionRepositoryImpl(Modular.get()),
     );
-    i.addSingleton<CreateTransactionUsecase>(
+    i.add<CreateTransactionUsecase>(
       () => CreateTransactionUsecase(Modular.get()),
     );
-    i.addSingleton<NewTransactionStore>(
+    i.add<NewTransactionStore>(
       () => NewTransactionStore(Modular.get()),
     );
   }
@@ -29,6 +29,6 @@ class TransactionModule extends Module {
   @override
   void routes(r) {
     r.child('/', child: (_) => const TransactionView());
-    r.child('/new', child: (_) => NewTransactionView(store: Modular.get()));
+    r.child('/new', child: (_) => NewTransactionView());
   }
 }

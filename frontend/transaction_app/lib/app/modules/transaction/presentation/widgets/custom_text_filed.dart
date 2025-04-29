@@ -9,6 +9,7 @@ class CustomTextFiled extends StatelessWidget {
   final TextEditingController? controller;
   final Function(String)? onChanged;
   final List<TextInputFormatter> inputFormatters;
+  final int? maxLength;
 
   const CustomTextFiled({
     super.key,
@@ -19,6 +20,7 @@ class CustomTextFiled extends StatelessWidget {
     this.controller,
     this.onChanged,
     this.inputFormatters = const [],
+    this.maxLength
   });
 
   @override
@@ -32,18 +34,11 @@ class CustomTextFiled extends StatelessWidget {
       onChanged: onChanged ?? (value) {},
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
+      maxLength: maxLength,
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
         errorText: errorText,
-        // border: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(8.0),
-        //   borderSide: const BorderSide(color: Colors.blue, width: 2.0),
-        // ),
-        // focusedBorder: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(8.0),
-        //   borderSide: const BorderSide(color: Colors.blue, width: 2.0),
-        // ),
       ),
     );
   }

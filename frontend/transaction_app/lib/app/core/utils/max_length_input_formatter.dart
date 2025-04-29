@@ -1,15 +1,18 @@
-import 'package:flutter/services.dart';
-import 'package:transaction_app/app/core/utils/text_validations.dart';
 
-class AlphanumericInputFormatter extends TextInputFormatter {
+import 'package:flutter/services.dart';
+
+class MaxLengthInputFormatter extends TextInputFormatter {
+  final int maxLength;
+
+  MaxLengthInputFormatter(this.maxLength);
+
   @override
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
     var filteredText = newValue.text;
-    if (filteredText.trim().isNotEmpty &&
-        !TextValidations.isAlphanumWithSpaces(filteredText)) {
+    if (filteredText.length > 50) {
       filteredText = oldValue.text;
     }
     return TextEditingValue(
@@ -18,3 +21,5 @@ class AlphanumericInputFormatter extends TextInputFormatter {
     );
   }
 }
+
+

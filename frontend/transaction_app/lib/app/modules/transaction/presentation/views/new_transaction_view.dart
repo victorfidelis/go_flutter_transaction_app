@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:transaction_app/app/core/services/nofitication_service.dart';
 import 'package:transaction_app/app/core/utils/alphanumeric_input_formatter.dart';
+import 'package:transaction_app/app/core/utils/max_length_input_formatter.dart';
 import 'package:transaction_app/app/core/utils/money_input_formatter.dart';
 import 'package:transaction_app/app/core/widgets/custom_loading.dart';
 import 'package:transaction_app/app/core/widgets/custom_text_error.dart';
@@ -9,15 +12,30 @@ import 'package:transaction_app/app/modules/transaction/presentation/widgets/cus
 import 'package:transaction_app/app/modules/transaction/presentation/widgets/custom_date_field.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/widgets/custom_text_filed.dart';
 
-class NewTransactionView extends StatelessWidget {
-  final NewTransactionStore store;
+class NewTransactionView extends StatefulWidget {
+  const NewTransactionView({super.key});
 
-  const NewTransactionView({super.key, required this.store});
+  @override
+  State<NewTransactionView> createState() => _NewTransactionViewState();
+}
+
+class _NewTransactionViewState extends State<NewTransactionView> {
+  late final NewTransactionStore store;
+
+  @override
+  void initState() {
+    store = Modular.get();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Nova Transação'), centerTitle: true, toolbarHeight: 100),
+      appBar: AppBar(
+        title: const Text('Nova Transação'),
+        centerTitle: true,
+        toolbarHeight: 100,
+      ),
       body: SingleChildScrollView(child: _buildResponsiveForm()),
     );
   }
@@ -68,7 +86,10 @@ class NewTransactionView extends StatelessWidget {
               labelText: 'Descrição',
               errorText: store.descriptionError,
               onChanged: store.setDescription,
-              inputFormatters: [AlphanumericInputFormatter()],
+              inputFormatters: [
+                AlphanumericInputFormatter(),
+                MaxLengthInputFormatter(50),
+              ],
             );
           },
         ),
@@ -94,37 +115,48 @@ class NewTransactionView extends StatelessWidget {
             );
           },
         ),
-        Observer(
-          builder: (context) {
-            return _buildGenericErrorMessage();
-          },
-        ),
-        Observer(
-          builder: (context) {
-            if (store.isLoading) {
-              return Center(child: CustomLoading());
-            }
-            if (store.transactionCreated) {
-              return SizedBox();
-            }
-
-            return CustomButton(
-              label: 'Salvar Transação',
-              onTap: store.createTransaction,
-            );
-          },
-        ),
+        _buildGenericErrorMessage(),
+        _buildSaveButtom(),
       ],
     );
   }
 
   Widget _buildGenericErrorMessage() {
-    if (store.error == null) {
-      return SizedBox(height: 50);
-    }
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 40),
-      child: CustomTextError(message: store.error!),
+    return Observer(
+      builder: (context) {
+        if (store.error == null) {
+          return SizedBox(height: 50);
+        }
+        return Padding(
+          padding: EdgeInsets.symmetric(vertical: 40),
+          child: CustomTextError(message: store.error!),
+        );
+      },
+    );
+  }
+
+  Widget _buildSaveButtom() {
+    return Observer(
+      builder: (context) {
+        if (store.isLoading) {
+          return Center(child: CustomLoading());
+        }
+        if (store.transactionCreated) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Modular.get<NotificationService>().showSuccessAlert(
+              context: context,
+              title: 'Transação enviada',
+              content: "Parabéns! Sua transação foi enviada com sucesso",
+              confirmCallback: () => Navigator.pop(context),
+            );
+          });
+        }
+
+        return CustomButton(
+          label: 'Enviar Transação',
+          onTap: store.createTransaction,
+        );
+      },
     );
   }
 }
