@@ -3,7 +3,6 @@ import 'package:transaction_app/app/core/result/result.dart';
 import 'package:transaction_app/app/core/result/result_extensions.dart';
 import 'package:transaction_app/app/modules/transaction/domain/entities/transaction_entity.dart';
 import 'package:transaction_app/app/modules/transaction/domain/errors/transaction_error.dart';
-import 'package:transaction_app/app/modules/transaction/domain/errors/validation_error.dart';
 import 'package:transaction_app/app/modules/transaction/domain/usecases/create_transaction_usecase.dart';
 
 part 'new_transaction_store.g.dart';
@@ -61,16 +60,22 @@ abstract class NewTransactionStoreBase with Store {
   void setError(String? value) => error = value;
 
   Future<void> createTransaction() async {
+    Map<String, String> errors = {};
     if (date == null) {
-      setDateError("Informe um valor de data");
-      return;
+      errors['date'] = "Informe um valor de data";
     }
 
     final transaction = TransactionEntity(
       description: description,
       amount: amount,
-      date: date!,
+      date: date ?? DateTime.now(),
     );
+
+    errors.addAll(transaction.validateTransaction());
+    if (errors.isNotEmpty) {
+      _handleTextErrors(errors);
+      return;
+    }
 
     setLoading(true);
 
@@ -80,22 +85,22 @@ abstract class NewTransactionStoreBase with Store {
     setLoading(false);
   }
 
+  void _handleTextErrors(Map<String, String> errors) {
+    setDescriptionError(errors['description']);
+    setAmountError(errors['amount']);
+    setDateError(errors['date']);
+    _resetGenericErrorsOnly();
+  }
+
   void _handleResult(Result result) {
     if (result.isError) {
-      final error = (result as Error).error;
-      if (error is ValidationError) {
-        setDescriptionError(error.errors['description']);
-        setAmountError(error.errors['amount']);
-        setDateError(error.errors['date']);
-        _resetGenericErrorsOnly();
+      final error = result as Error;
+      if (error is CreateTransactionError) {
+        setError((error as CreateTransactionError).message);
       } else {
-        if (error is CreateTransactionError) {
-          setError(error.message);
-        } else {
-          setError('Um erro inesperado ocorreu. Tente novamente mais tarde.');
-        }
-        _resetFieldErrorsOnly();
+        setError('Um erro inesperado ocorreu. Tente novamente mais tarde.');
       }
+      _resetFieldErrorsOnly();
     } else {
       _resetAllErrors();
       setTransactionCreated(true);
