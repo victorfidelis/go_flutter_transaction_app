@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextFiled extends StatelessWidget {
   final String? hintText;
@@ -7,6 +8,7 @@ class CustomTextFiled extends StatelessWidget {
   final bool isMoney;
   final TextEditingController? controller;
   final Function(String)? onChanged;
+  final List<TextInputFormatter> inputFormatters;
 
   const CustomTextFiled({
     super.key,
@@ -16,6 +18,7 @@ class CustomTextFiled extends StatelessWidget {
     this.isMoney = false,
     this.controller,
     this.onChanged,
+    this.inputFormatters = const [],
   });
 
   @override
@@ -28,18 +31,19 @@ class CustomTextFiled extends StatelessWidget {
     return TextField(
       onChanged: onChanged ?? (value) {},
       keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
         errorText: errorText,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-          borderSide: const BorderSide(color: Colors.blue, width: 2.0),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-          borderSide: const BorderSide(color: Colors.blue, width: 2.0),
-        ),
+        // border: OutlineInputBorder(
+        //   borderRadius: BorderRadius.circular(8.0),
+        //   borderSide: const BorderSide(color: Colors.blue, width: 2.0),
+        // ),
+        // focusedBorder: OutlineInputBorder(
+        //   borderRadius: BorderRadius.circular(8.0),
+        //   borderSide: const BorderSide(color: Colors.blue, width: 2.0),
+        // ),
       ),
     );
   }

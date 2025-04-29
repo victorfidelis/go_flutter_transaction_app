@@ -30,7 +30,7 @@ class _CustomDateFieldState extends State<CustomDateField> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () => _selectDate(context),
       child: InputDecorator(
         decoration: InputDecoration(
@@ -48,7 +48,7 @@ class _CustomDateFieldState extends State<CustomDateField> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            const Icon(Icons.calendar_today),
+            const Icon(Icons.calendar_month),
           ],
         ),
       ),

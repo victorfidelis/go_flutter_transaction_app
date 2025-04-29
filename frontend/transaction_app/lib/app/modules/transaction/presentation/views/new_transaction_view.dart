@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:transaction_app/app/core/utils/alphanumeric_input_formatter.dart';
+import 'package:transaction_app/app/core/utils/money_input_formatter.dart';
 import 'package:transaction_app/app/core/widgets/custom_loading.dart';
 import 'package:transaction_app/app/core/widgets/custom_text_error.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/store/new_transaction_store.dart';
+import 'package:transaction_app/app/modules/transaction/presentation/widgets/custom_buttom.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/widgets/custom_date_field.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/widgets/custom_text_filed.dart';
 
@@ -14,7 +17,7 @@ class NewTransactionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Nova Transação')),
+      appBar: AppBar(title: const Text('Nova Transação'), centerTitle: true, toolbarHeight: 100),
       body: SingleChildScrollView(child: _buildResponsiveForm()),
     );
   }
@@ -65,21 +68,23 @@ class NewTransactionView extends StatelessWidget {
               labelText: 'Descrição',
               errorText: store.descriptionError,
               onChanged: store.setDescription,
+              inputFormatters: [AlphanumericInputFormatter()],
             );
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 40),
         Observer(
           builder: (context) {
             return CustomTextFiled(
-              hintText: 'Valor (USD)',
+              labelText: 'Valor (USD)',
               isMoney: true,
               errorText: store.amountError,
               onChanged: store.setAmount,
+              inputFormatters: [MoneyInputFormatter()],
             );
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 40),
         Observer(
           builder: (context) {
             return CustomDateField(
@@ -92,7 +97,7 @@ class NewTransactionView extends StatelessWidget {
         Observer(
           builder: (context) {
             return _buildGenericErrorMessage();
-          }
+          },
         ),
         Observer(
           builder: (context) {
@@ -102,9 +107,10 @@ class NewTransactionView extends StatelessWidget {
             if (store.transactionCreated) {
               return SizedBox();
             }
-            return ElevatedButton(
-              onPressed: store.createTransaction,
-              child: const Text('Salvar Transação'),
+
+            return CustomButton(
+              label: 'Salvar Transação',
+              onTap: store.createTransaction,
             );
           },
         ),
@@ -114,10 +120,10 @@ class NewTransactionView extends StatelessWidget {
 
   Widget _buildGenericErrorMessage() {
     if (store.error == null) {
-      return SizedBox(height: 24);
+      return SizedBox(height: 50);
     }
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 20),
+      padding: EdgeInsets.symmetric(vertical: 40),
       child: CustomTextError(message: store.error!),
     );
   }

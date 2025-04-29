@@ -33,7 +33,7 @@ Map<String, String> _validateTransaction(TransactionEntity transaction) {
   if (transaction.amount <= 0) {
     errors['amount'] = 'Valor deve ser maior que zero';
   } else if (transaction.amount > 99999.99) {
-    errors['amount'] = 'Valor deve ser menor que USD 99.999,99';
+    errors['amount'] = 'Valor máximo é USD 99.999,99';
   }
 
   return errors;
