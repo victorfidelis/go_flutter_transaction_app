@@ -138,10 +138,7 @@ class _NewTransactionViewState extends State<NewTransactionView> {
   Widget _buildSaveButtom() {
     return Observer(
       builder: (context) {
-        if (store.isLoading) {
-          return Center(child: CustomLoading());
-        }
-        if (store.transactionCreated) {
+        if (store.transactionSend) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             Modular.get<NotificationService>().showSuccessAlert(
               context: context,

@@ -27,7 +27,7 @@ class TransactionWithExchangeModel extends TransactionWithExchangeEntity {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'description': description,

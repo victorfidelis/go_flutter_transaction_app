@@ -1,8 +1,8 @@
+import 'dart:isolate';
+import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:transaction_app/app/core/result/result.dart';
-import 'package:transaction_app/app/core/result/result_extensions.dart';
 import 'package:transaction_app/app/modules/transaction/domain/entities/transaction_entity.dart';
-import 'package:transaction_app/app/modules/transaction/domain/errors/transaction_error.dart';
 import 'package:transaction_app/app/modules/transaction/domain/usecases/create_transaction_usecase.dart';
 
 part 'new_transaction_store.g.dart';
@@ -15,14 +15,9 @@ abstract class NewTransactionStoreBase with Store {
   NewTransactionStoreBase(this.createTransactionUsecase);
 
   @observable
-  bool transactionCreated = false;
+  bool transactionSend = false;
   @action
-  void setTransactionCreated(bool value) => transactionCreated = value;
-
-  @observable
-  bool isLoading = false;
-  @action
-  void setLoading(bool value) => isLoading = value;
+  void setTransactionSend(bool value) => transactionSend = value;
 
   String description = '';
   void setDescription(String value) => description = value.trim();
@@ -32,7 +27,7 @@ abstract class NewTransactionStoreBase with Store {
     if (value.isEmpty) {
       amount = 0;
     } else {
-      amount = double.parse(value);
+      amount = double.parse(value.replaceAll(',', '.'));
     }
   }
 
@@ -77,12 +72,9 @@ abstract class NewTransactionStoreBase with Store {
       return;
     }
 
-    setLoading(true);
+    createTransactionUsecase.call(transaction);
 
-    final result = await createTransactionUsecase.call(transaction);
-    _handleResult(result);
-
-    setLoading(false);
+    setTransactionSend(true);
   }
 
   void _handleTextErrors(Map<String, String> errors) {
@@ -90,32 +82,6 @@ abstract class NewTransactionStoreBase with Store {
     setAmountError(errors['amount']);
     setDateError(errors['date']);
     _resetGenericErrorsOnly();
-  }
-
-  void _handleResult(Result result) {
-    if (result.isError) {
-      final error = result as Error;
-      if (error is CreateTransactionError) {
-        setError((error as CreateTransactionError).message);
-      } else {
-        setError('Um erro inesperado ocorreu. Tente novamente mais tarde.');
-      }
-      _resetFieldErrorsOnly();
-    } else {
-      _resetAllErrors();
-      setTransactionCreated(true);
-    }
-  }
-
-  void _resetAllErrors() {
-    _resetFieldErrorsOnly();
-    _resetGenericErrorsOnly();
-  }
-
-  void _resetFieldErrorsOnly() {
-    setDescriptionError(null);
-    setAmountError(null);
-    setDateError(null);
   }
 
   void _resetGenericErrorsOnly() {

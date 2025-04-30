@@ -1,4 +1,7 @@
+import 'dart:isolate';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:transaction_app/app/core/result/result.dart';
 import 'package:transaction_app/app/modules/transaction/data/datasources/transaction_datasource.dart';
 import 'package:transaction_app/app/modules/transaction/data/models/transaction_model.dart';
@@ -18,26 +21,54 @@ class TransactionDatasourceDio implements TransactionDatasource {
   ) async {
     final transactionModel = TransactionModel.fromEntity(transaction);
     try {
-      final response = await dio.post(
-        '/transactions',
-        data: transactionModel.toJson(),
+      final result = await _sendTransactionMapInIsolate(
+        transactionModel.toMap(),
+        dio.options.baseUrl,
       );
-      if (response.statusCode == 201) {
-        return Result.ok(TransactionModel.fromJson(response.data));
+
+      final statusCode = result['statusCode'];
+      final data = result['data'];
+
+      if (statusCode == 201) {
+        return Result.ok(TransactionModel.fromJson(data));
       } else {
         return Result.error(
-          CreateTransactionError(
-            response.data['message'] ?? 'Falha ao criar transação',
-          ),
+          CreateTransactionError(data['message'] ?? 'Falha ao criar transação'),
         );
       }
-    } on DioException catch (e) {
-      return Result.error(CreateTransactionError('Erro criar transação: ${e.message}'));
     } catch (e) {
       return Result.error(
         CreateTransactionError('Erro ao criar transação: $e'),
       );
     }
+  }
+
+  Future<Map<String, dynamic>> _sendTransactionMapInIsolate(
+    Map<String, dynamic> transactionMap,
+    String baseUrl,
+  ) async {
+    if (kIsWeb) {
+      return await _sendTransactionMap(transactionMap, baseUrl);
+    } else {
+      return await Isolate.run(
+        () async => _sendTransactionMap(transactionMap, baseUrl),
+      );
+    }
+  }
+
+  static Future<Map<String, dynamic>> _sendTransactionMap(
+    Map<String, dynamic> transactionMap,
+    String baseUrl,
+  ) async {
+    final dio = Dio(BaseOptions(baseUrl: baseUrl));
+
+    final response = await dio.post(
+      '/transactions',
+      data: transactionMap,
+      options: Options(headers: {'Content-Type': 'application/json'}),
+    );
+
+    return {'statusCode': response.statusCode, 'data': response.data};
   }
 
   @override
@@ -57,7 +88,9 @@ class TransactionDatasourceDio implements TransactionDatasource {
         );
       }
     } on DioException catch (e) {
-      return Result.error(CreateTransactionError('Erro obter transação: ${e.message}'));
+      return Result.error(
+        CreateTransactionError('Erro obter transação: ${e.message}'),
+      );
     } catch (e) {
       return Result.error(GetTransactionError('Erro ao obter transação: $e'));
     }
@@ -81,7 +114,9 @@ class TransactionDatasourceDio implements TransactionDatasource {
         );
       }
     } on DioException catch (e) {
-      return Result.error(CreateTransactionError('Erro obter transações: ${e.message}'));
+      return Result.error(
+        CreateTransactionError('Erro obter transações: ${e.message}'),
+      );
     } catch (e) {
       return Result.error(GetTransactionError('Erro ao obter transações: $e'));
     }

@@ -17,7 +17,7 @@ class TransactionModel extends TransactionEntity {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'description': description,

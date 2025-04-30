@@ -13,6 +13,24 @@ class TransactionEntity {
     required this.date,
   });
 
+  factory TransactionEntity.fromMap(Map<String, dynamic> json) {
+    return TransactionEntity(
+      id: json['id'],
+      description: json['description'],
+      amount: json['amount'].toDouble(),
+      date: DateTime.parse(json['date']),
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'description': description,
+      'amount': amount,
+      'date': date.toUtc().toIso8601String(),
+    };
+  }
+
   Map<String, String> validateTransaction() {
     final errors = <String, String>{};
 

@@ -9,35 +9,19 @@ part of 'new_transaction_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$NewTransactionStore on NewTransactionStoreBase, Store {
-  late final _$transactionCreatedAtom = Atom(
-      name: 'NewTransactionStoreBase.transactionCreated', context: context);
+  late final _$transactionSendAtom =
+      Atom(name: 'NewTransactionStoreBase.transactionSend', context: context);
 
   @override
-  bool get transactionCreated {
-    _$transactionCreatedAtom.reportRead();
-    return super.transactionCreated;
+  bool get transactionSend {
+    _$transactionSendAtom.reportRead();
+    return super.transactionSend;
   }
 
   @override
-  set transactionCreated(bool value) {
-    _$transactionCreatedAtom.reportWrite(value, super.transactionCreated, () {
-      super.transactionCreated = value;
-    });
-  }
-
-  late final _$isLoadingAtom =
-      Atom(name: 'NewTransactionStoreBase.isLoading', context: context);
-
-  @override
-  bool get isLoading {
-    _$isLoadingAtom.reportRead();
-    return super.isLoading;
-  }
-
-  @override
-  set isLoading(bool value) {
-    _$isLoadingAtom.reportWrite(value, super.isLoading, () {
-      super.isLoading = value;
+  set transactionSend(bool value) {
+    _$transactionSendAtom.reportWrite(value, super.transactionSend, () {
+      super.transactionSend = value;
     });
   }
 
@@ -109,22 +93,11 @@ mixin _$NewTransactionStore on NewTransactionStoreBase, Store {
       ActionController(name: 'NewTransactionStoreBase', context: context);
 
   @override
-  void setTransactionCreated(bool value) {
+  void setTransactionSend(bool value) {
     final _$actionInfo = _$NewTransactionStoreBaseActionController.startAction(
-        name: 'NewTransactionStoreBase.setTransactionCreated');
+        name: 'NewTransactionStoreBase.setTransactionSend');
     try {
-      return super.setTransactionCreated(value);
-    } finally {
-      _$NewTransactionStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setLoading(bool value) {
-    final _$actionInfo = _$NewTransactionStoreBaseActionController.startAction(
-        name: 'NewTransactionStoreBase.setLoading');
-    try {
-      return super.setLoading(value);
+      return super.setTransactionSend(value);
     } finally {
       _$NewTransactionStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -177,8 +150,7 @@ mixin _$NewTransactionStore on NewTransactionStoreBase, Store {
   @override
   String toString() {
     return '''
-transactionCreated: ${transactionCreated},
-isLoading: ${isLoading},
+transactionSend: ${transactionSend},
 descriptionError: ${descriptionError},
 amountError: ${amountError},
 dateError: ${dateError},
