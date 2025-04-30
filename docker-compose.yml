@@ -31,3 +31,17 @@ services:
       DB_PORT: ${POSTGRES_PORT}
     ports:
       - "${BACKEND_PORT}:8080"
+
+  # flutter:
+  #   build:
+  #     context: ./frontend/transaction_app
+  #   ports:
+  #     - "5000:5000"  # Para web
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - minha-rede
+
+networks:
+  minha-rede:
+    driver: bridge

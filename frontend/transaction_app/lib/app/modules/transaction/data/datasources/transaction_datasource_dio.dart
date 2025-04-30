@@ -1,5 +1,4 @@
 import 'dart:isolate';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:transaction_app/app/core/result/result.dart';
