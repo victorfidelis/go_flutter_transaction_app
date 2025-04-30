@@ -36,6 +36,7 @@ class NotificationsServiceImpl implements NotificationService {
   }) async {
     await showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
             title: Text(title),

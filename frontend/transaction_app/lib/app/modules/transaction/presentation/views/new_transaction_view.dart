@@ -7,6 +7,7 @@ import 'package:transaction_app/app/core/utils/max_length_input_formatter.dart';
 import 'package:transaction_app/app/core/utils/money_input_formatter.dart';
 import 'package:transaction_app/app/core/widgets/custom_text_error.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/store/new_transaction_store.dart';
+import 'package:transaction_app/app/modules/transaction/presentation/store/transaction_store.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/widgets/custom_buttom.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/widgets/custom_date_field.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/widgets/custom_text_filed.dart';
@@ -138,12 +139,15 @@ class _NewTransactionViewState extends State<NewTransactionView> {
     return Observer(
       builder: (context) {
         if (store.transactionSend) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            Modular.get<NotificationService>().showSuccessAlert(
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
+            await Modular.get<NotificationService>().showSuccessAlert(
               context: context,
               title: 'Transação enviada',
               content: "Parabéns! Sua transação foi enviada com sucesso",
-              confirmCallback: () => Navigator.pop(context),
+              confirmCallback: () {
+                Navigator.pop(context, true);
+                Modular.get<TransactionStore>().loadTransations();
+              },
             );
           });
         }

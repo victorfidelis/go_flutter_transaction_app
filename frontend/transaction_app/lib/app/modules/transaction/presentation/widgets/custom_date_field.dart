@@ -44,7 +44,7 @@ class _CustomDateFieldState extends State<CustomDateField> {
               child: Text(
                 date == null
                     ? 'Selecione uma data'
-                    : DateFormatter.formatDate(date!),
+                    : DateFormatters.formatDate(date!),
                 overflow: TextOverflow.ellipsis,
               ),
             ),

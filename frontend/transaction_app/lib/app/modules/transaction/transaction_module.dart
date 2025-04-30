@@ -29,7 +29,7 @@ class TransactionModule extends Module {
     );  
 
     i.add<GetTransactionsUsecase>(() => GetTransactionsUsecase(Modular.get()));
-    i.add<TransactionStore>(() => TransactionStore(Modular.get()));
+    i.addSingleton<TransactionStore>(() => TransactionStore(Modular.get()));
   }
 
   @override
