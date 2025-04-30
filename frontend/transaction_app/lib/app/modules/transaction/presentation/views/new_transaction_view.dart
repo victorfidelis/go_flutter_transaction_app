@@ -5,7 +5,6 @@ import 'package:transaction_app/app/core/services/nofitication_service.dart';
 import 'package:transaction_app/app/core/utils/alphanumeric_input_formatter.dart';
 import 'package:transaction_app/app/core/utils/max_length_input_formatter.dart';
 import 'package:transaction_app/app/core/utils/money_input_formatter.dart';
-import 'package:transaction_app/app/core/widgets/custom_loading.dart';
 import 'package:transaction_app/app/core/widgets/custom_text_error.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/store/new_transaction_store.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/widgets/custom_buttom.dart';

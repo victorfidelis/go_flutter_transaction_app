@@ -5,7 +5,9 @@ import 'package:transaction_app/app/modules/transaction/data/datasources/transac
 import 'package:transaction_app/app/modules/transaction/data/repositories/transaction_repository_impl.dart';
 import 'package:transaction_app/app/modules/transaction/domain/repositories/transaction_repository.dart';
 import 'package:transaction_app/app/modules/transaction/domain/usecases/create_transaction_usecase.dart';
+import 'package:transaction_app/app/modules/transaction/domain/usecases/get_transactions_usecase.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/store/new_transaction_store.dart';
+import 'package:transaction_app/app/modules/transaction/presentation/store/transaction_store.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/views/new_transaction_view.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/views/transaction_view.dart';
 
@@ -18,12 +20,16 @@ class TransactionModule extends Module {
     i.add<TransactionRepository>(
       () => TransactionRepositoryImpl(Modular.get()),
     );
+    
     i.add<CreateTransactionUsecase>(
       () => CreateTransactionUsecase(Modular.get()),
     );
     i.add<NewTransactionStore>(
       () => NewTransactionStore(Modular.get()),
-    );
+    );  
+
+    i.add<GetTransactionsUsecase>(() => GetTransactionsUsecase(Modular.get()));
+    i.add<TransactionStore>(() => TransactionStore(Modular.get()));
   }
 
   @override
