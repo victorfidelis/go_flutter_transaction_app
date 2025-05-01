@@ -3,8 +3,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:transaction_app/app/core/widgets/custom_loading.dart';
 import 'package:transaction_app/app/core/widgets/empty_list.dart';
+import 'package:transaction_app/app/modules/transaction/domain/entities/transaction_entity.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/store/transaction_store.dart';
-import 'package:transaction_app/app/core/widgets/error_loading_list.dart';
+import 'package:transaction_app/app/core/widgets/error_loading.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/widgets/transaction_card.dart';
 
 class TransactionView extends StatefulWidget {
@@ -44,7 +45,7 @@ class _TransactionViewState extends State<TransactionView> {
         if (store.isLoading) {
           return CustomLoading();
         } else if (store.isError) {
-          return ErrorLoadingList(
+          return ErrorLoading(
             errorMessage: store.errorMessage!,
             onRetry: store.loadTransations,
           );
@@ -74,7 +75,10 @@ class _TransactionViewState extends State<TransactionView> {
                 if (transactions.length == index) {
                   return SizedBox(height: 90);
                 } else {
-                  return TransactionCard(transactions[index]);
+                  return TransactionCard(
+                    transactions[index],
+                    onTap: goToTransactionDetail,
+                  );
                 }
               },
             ),
@@ -86,5 +90,9 @@ class _TransactionViewState extends State<TransactionView> {
 
   void goToNewTransaction() {
     Modular.to.pushNamed('/new');
+  }
+
+  void goToTransactionDetail(TransactionEntity transaction) {
+    Modular.to.pushNamed('/detail', arguments: transaction);
   }
 }

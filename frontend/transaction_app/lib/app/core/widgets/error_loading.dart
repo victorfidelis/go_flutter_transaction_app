@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ErrorLoadingList extends StatelessWidget {
+class ErrorLoading extends StatelessWidget {
   final String errorMessage;
-  final Function() onRetry;
+  final Function()? onRetry;
 
-  const ErrorLoadingList({
+  const ErrorLoading({
     super.key,
     required this.errorMessage,
-    required this.onRetry,
+    this.onRetry,
   });
 
   @override
@@ -25,8 +25,8 @@ class ErrorLoadingList extends StatelessWidget {
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 24),
-            ElevatedButton(
+            onRetry == null ? SizedBox() : const SizedBox(height: 24),
+            onRetry == null ? SizedBox() : ElevatedButton(
               onPressed: onRetry,
               child: const Text("Tentar novamente"),
             ),
