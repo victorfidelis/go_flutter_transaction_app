@@ -1,10 +1,6 @@
 import 'package:transaction_app/app/core/utils/string_extensions.dart';
 
 class NumberFormatters {
-  static String formatZipCode(String zipCode) {
-    return '${zipCode.substring(0, 5)}-${zipCode.substring(5, 8)}';
-  }
-
   static String formatMoney(double money) {
     var textPrice = money.toStringAsFixed(2).replaceAll('.', ',').trim();
     textPrice = addThousandsSeparator(textPrice);
