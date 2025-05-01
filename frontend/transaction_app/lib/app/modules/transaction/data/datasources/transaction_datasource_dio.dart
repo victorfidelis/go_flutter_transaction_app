@@ -87,6 +87,13 @@ class TransactionDatasourceDio implements TransactionDatasource {
         );
       }
     } on DioException catch (e) {
+      if (e.response != null &&
+          e.response!.data.containsKey('error') &&
+          e.response!.data['error'] == 'no data found') {
+        return Result.error(
+          CreateTransactionError('Não foi encontrada taxa de câmbio.'),
+        );
+      }
       return Result.error(
         CreateTransactionError('Erro obter transação: ${e.message}'),
       );
@@ -118,10 +125,9 @@ class TransactionDatasourceDio implements TransactionDatasource {
         message =
             'O servidor não está respondendo. Entre em contato com o suporte.';
       } else if (e.type.name == 'badResponse') {
-          message =
+        message =
             'Ocorreu uma falha inesperado no servidor. Entre em contato com o suporte.';
-      } 
-      else {
+      } else {
         message =
             'Um erro inesperado ocorreu ao buscar dados no servidor. Entre em contato com o suporte: ${e.message}';
       }
