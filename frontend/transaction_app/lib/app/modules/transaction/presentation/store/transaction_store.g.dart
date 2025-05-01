@@ -31,7 +31,7 @@ mixin _$TransactionStore on TransactionStoreBase, Store {
   @override
   void _setIsLoading(bool value) {
     final _$actionInfo = _$TransactionStoreBaseActionController.startAction(
-        name: 'TransactionStoreBase.setIsLoading');
+        name: 'TransactionStoreBase._setIsLoading');
     try {
       return super._setIsLoading(value);
     } finally {

@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:transaction_app/app/core/widgets/custom_loading.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/store/transaction_store.dart';
+import 'package:transaction_app/app/modules/transaction/presentation/widgets/error_loading_list.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/widgets/transaction_card.dart';
 
 class TransactionView extends StatefulWidget {
@@ -43,6 +44,13 @@ class _TransactionViewState extends State<TransactionView> {
       builder: (context) {
         if (store.isLoading) {
           return Center(child: CustomLoading());
+        } else if (store.isError) {
+          return Center(
+            child: ErrorLoadingList(
+              errorMessage: store.errorMessage!,
+              onRetry: store.loadTransations,
+            ),
+          );
         } else {
           return _buildTransactionsList();
         }

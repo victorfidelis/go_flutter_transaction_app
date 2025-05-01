@@ -23,7 +23,8 @@ abstract class TransactionStoreBase with Store {
 
   bool get noTransactions => transactions.isEmpty;
 
-  String errorMessage = '';
+  String? errorMessage;
+  bool get isError => errorMessage != null;
 
   Future<void> loadTransations() async {
     _setIsLoading(true);
@@ -33,7 +34,7 @@ abstract class TransactionStoreBase with Store {
     if (result.isError) {
       errorMessage = (result as Error).error.toString();
     } else {
-      errorMessage = '';
+      errorMessage = null;
       transactions = (result as Ok).value;
     }
 

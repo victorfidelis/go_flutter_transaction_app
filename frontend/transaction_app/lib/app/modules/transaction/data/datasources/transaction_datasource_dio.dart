@@ -113,11 +113,21 @@ class TransactionDatasourceDio implements TransactionDatasource {
         );
       }
     } on DioException catch (e) {
-      return Result.error(
-        CreateTransactionError('Erro obter transações: ${e.message}'),
-      );
+      String message;
+      if (e.type.name == 'connectionTimeout') {
+        message =
+            'O servidor não está respondendo. Entre em contato com o suporte.';
+      } else {
+        message =
+            'Um erro inesperado ocorreu ao buscar dados no servidor. Entre em contato com o suporte: ${e.message}';
+      }
+      return Result.error(CreateTransactionError(message));
     } catch (e) {
-      return Result.error(GetTransactionError('Erro ao obter transações: $e'));
+      return Result.error(
+        GetTransactionError(
+          'Um erro inesperado ocorreu. Entre em contato com o suporte: $e',
+        ),
+      );
     }
   }
 }
