@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:transaction_app/app/core/services/nofitication_service.dart';
 import 'package:transaction_app/app/core/widgets/custom_loading.dart';
 import 'package:transaction_app/app/core/widgets/empty_list.dart';
 import 'package:transaction_app/app/core/widgets/error_loading.dart';
@@ -68,6 +69,7 @@ class _PendingTransactionViewState extends State<PendingTransactionView> {
                   return TransactionCard(
                     transactions[index],
                     onTap: goToEditTransaction,
+                    onLongTap: questionDelete,
                   );
                 }
               },
@@ -83,5 +85,16 @@ class _PendingTransactionViewState extends State<PendingTransactionView> {
     if (doReload ?? false) {
       store.loadTransations();
     }
+  }
+
+  Future<void> questionDelete(TransactionEntity transaction) async {
+    final notifications = Modular.get<NotificationService>();
+    await notifications.showQuestionAlert(
+      context: context,
+      title: 'Deletar transação',
+      content:
+          'Deseja deletar a transação "${transaction.description}"?',
+      confirmCallback: () => store.deleteTransaction(transaction.id),
+    );
   }
 }

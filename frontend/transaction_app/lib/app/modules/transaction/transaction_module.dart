@@ -52,9 +52,6 @@ class TransactionModule extends Module {
     i.add<GetPendingTransactionsUsecase>(
       () => GetPendingTransactionsUsecase(Modular.get()),
     );
-    i.addSingleton<PendingTransactionStore>(
-      () => PendingTransactionStore(Modular.get()),
-    );
     i.add<CreatePendingTransactionUsecase>(
       () => CreatePendingTransactionUsecase(Modular.get()),
     );
@@ -63,6 +60,9 @@ class TransactionModule extends Module {
     );
     i.add<DeletePendingTransactionUsecase>(
       () => DeletePendingTransactionUsecase(Modular.get()),
+    );
+    i.addSingleton<PendingTransactionStore>(
+      () => PendingTransactionStore(Modular.get(), Modular.get()),
     );
 
     // Store para criar uma nova transação

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:transaction_app/app/modules/transaction/presentation/store/pending_transaction_store.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/store/transaction_menu_store.dart';
+import 'package:transaction_app/app/modules/transaction/presentation/store/transaction_store.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/views/pending_transaction_view.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/views/transaction_view.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/widgets/custom_menu_buttom.dart';
@@ -69,7 +71,14 @@ class _TransactionMenuState extends State<TransactionMenu> {
     );
   }
 
-  void goToNewTransaction() {
-    Modular.to.pushNamed('/new');
+  Future<void> goToNewTransaction() async {
+    bool? doReload = await Modular.to.pushNamed('/new');
+    if (doReload ?? false) {
+      if (store.currentPage == MenuPage.transaction) {
+        Modular.get<TransactionStore>().loadTransations();
+      } else {
+        Modular.get<PendingTransactionStore>().loadTransations();
+      }
+    }
   }
 }

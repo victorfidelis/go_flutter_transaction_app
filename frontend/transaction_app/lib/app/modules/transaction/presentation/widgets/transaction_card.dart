@@ -6,7 +6,8 @@ import 'package:transaction_app/app/modules/transaction/domain/entities/transact
 class TransactionCard extends StatelessWidget {
   final TransactionEntity transaction;
   final Function(TransactionEntity) onTap;
-  const TransactionCard(this.transaction, {super.key, required this.onTap});
+  final Function(TransactionEntity)? onLongTap;
+  const TransactionCard(this.transaction, {super.key, required this.onTap, this.onLongTap});
 
   String get textAmount => NumberFormatters.formatMoney(transaction.amount);
   String get textDate => DateFormatters.formatDate(transaction.date);
@@ -15,6 +16,11 @@ class TransactionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => onTap(transaction),
+      onLongPress: () {
+        if (onLongTap != null) {
+          onLongTap!(transaction);
+        }
+      },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 6),
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
