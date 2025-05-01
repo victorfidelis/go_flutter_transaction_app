@@ -4,9 +4,9 @@ import 'package:transaction_app/app/modules/transaction/data/datasources/transac
 import 'package:transaction_app/app/modules/transaction/data/datasources/transaction_datasource_dio.dart';
 import 'package:transaction_app/app/modules/transaction/data/repositories/transaction_repository_impl.dart';
 import 'package:transaction_app/app/modules/transaction/domain/repositories/transaction_repository.dart';
-import 'package:transaction_app/app/modules/transaction/domain/usecases/create_transaction_usecase.dart';
-import 'package:transaction_app/app/modules/transaction/domain/usecases/get_transaction_usecase.dart';
-import 'package:transaction_app/app/modules/transaction/domain/usecases/get_transactions_usecase.dart';
+import 'package:transaction_app/app/modules/transaction/domain/usecases/transaction/create_transaction_usecase.dart';
+import 'package:transaction_app/app/modules/transaction/domain/usecases/transaction/get_transaction_usecase.dart';
+import 'package:transaction_app/app/modules/transaction/domain/usecases/transaction/get_transactions_usecase.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/store/new_transaction_store.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/store/transaction_menu_store.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/store/transaction_store.dart';

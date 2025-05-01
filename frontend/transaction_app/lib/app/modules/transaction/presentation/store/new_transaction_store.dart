@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:transaction_app/app/modules/transaction/domain/entities/transaction_entity.dart';
-import 'package:transaction_app/app/modules/transaction/domain/usecases/create_transaction_usecase.dart';
+import 'package:transaction_app/app/modules/transaction/domain/usecases/transaction/create_transaction_usecase.dart';
 
 part 'new_transaction_store.g.dart';
 

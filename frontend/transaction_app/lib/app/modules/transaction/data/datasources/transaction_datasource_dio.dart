@@ -7,7 +7,7 @@ import 'package:transaction_app/app/modules/transaction/data/models/transaction_
 import 'package:transaction_app/app/modules/transaction/data/models/transaction_with_exchange_model.dart';
 import 'package:transaction_app/app/modules/transaction/domain/entities/transaction_entity.dart';
 import 'package:transaction_app/app/modules/transaction/domain/entities/transaction_with_enchange_entity.dart';
-import 'package:transaction_app/app/modules/transaction/domain/errors/transaction_error.dart';
+import 'package:transaction_app/app/modules/transaction/domain/errors/transaction_errors.dart';
 
 class TransactionDatasourceDio implements TransactionDatasource {
   final Dio dio;

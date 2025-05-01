@@ -17,21 +17,21 @@ class TransactionModel extends TransactionEntity {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'description': description,
-      'amount': amount,
-      'date': date.toUtc().toIso8601String(),
-    };
-  }
-
   factory TransactionModel.fromEntity(TransactionEntity entity) {
     return TransactionModel(
       id: entity.id,
       description: entity.description,
       amount: entity.amount,
       date: entity.date,
+    );
+  }
+
+  factory TransactionModel.fromSqflite(Map map) {
+    return TransactionModel(
+      id: map['id'],
+      description: map['description'],
+      date: DateTime.fromMillisecondsSinceEpoch(map['date']),
+      amount: map['amount'],
     );
   }
 }

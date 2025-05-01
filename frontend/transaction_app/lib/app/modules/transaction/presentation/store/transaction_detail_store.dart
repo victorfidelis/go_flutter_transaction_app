@@ -3,7 +3,7 @@ import 'package:transaction_app/app/core/constants/currencies.dart';
 import 'package:transaction_app/app/core/result/result_extensions.dart';
 import 'package:transaction_app/app/modules/transaction/domain/entities/transaction_entity.dart';
 import 'package:transaction_app/app/modules/transaction/domain/entities/transaction_with_enchange_entity.dart';
-import 'package:transaction_app/app/modules/transaction/domain/usecases/get_transaction_usecase.dart';
+import 'package:transaction_app/app/modules/transaction/domain/usecases/transaction/get_transaction_usecase.dart';
 import 'package:transaction_app/app/core/result/result.dart';
  
 part 'transaction_detail_store.g.dart';

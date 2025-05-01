@@ -4,7 +4,7 @@ import 'package:mobx/mobx.dart';
 import 'package:transaction_app/app/core/result/result.dart';
 import 'package:transaction_app/app/core/result/result_extensions.dart';
 import 'package:transaction_app/app/modules/transaction/domain/entities/transaction_entity.dart';
-import 'package:transaction_app/app/modules/transaction/domain/usecases/get_transactions_usecase.dart';
+import 'package:transaction_app/app/modules/transaction/domain/usecases/transaction/get_transactions_usecase.dart';
 part 'transaction_store.g.dart';
 
 class TransactionStore = TransactionStoreBase with _$TransactionStore;
