@@ -8,14 +8,18 @@ import 'package:transaction_app/app/modules/transaction/domain/usecases/create_t
 import 'package:transaction_app/app/modules/transaction/domain/usecases/get_transaction_usecase.dart';
 import 'package:transaction_app/app/modules/transaction/domain/usecases/get_transactions_usecase.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/store/new_transaction_store.dart';
+import 'package:transaction_app/app/modules/transaction/presentation/store/transaction_menu_store.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/store/transaction_store.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/views/new_transaction_view.dart';
+import 'package:transaction_app/app/modules/transaction/presentation/views/pending_transaction_view.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/views/transaction_detail_view.dart';
-import 'package:transaction_app/app/modules/transaction/presentation/views/transaction_view.dart';
+import 'package:transaction_app/app/modules/transaction/presentation/views/transaction_menu.dart';
 
 class TransactionModule extends Module {
   @override
   void binds(i) {
+    i.addSingleton<TransactionMenuStore>(TransactionMenuStore.new);
+
     i.add<TransactionDatasource>(
       () => TransactionDatasourceDio(DioConfig.get()),
     );
@@ -36,11 +40,12 @@ class TransactionModule extends Module {
 
   @override
   void routes(r) {
-    r.child('/', child: (_) => const TransactionView());
+    r.child('/', child: (_) => TransactionMenu());
     r.child('/new', child: (_) => NewTransactionView());
     r.child(
       '/detail',
       child: (_) => TransactionDetailView(transaction: r.args.data),
     );
+    r.child('/pending', child: (_) => PendingTransactionView());
   }
 }

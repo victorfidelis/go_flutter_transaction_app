@@ -29,13 +29,8 @@ class _TransactionViewState extends State<TransactionView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Transaction View')),
+      appBar: AppBar(title: const Text('Transações')),
       body: _buildBody(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: goToNewTransaction,
-        tooltip: 'New Transaction',
-        child: const Icon(Icons.add),
-      ),
     );
   }
 
