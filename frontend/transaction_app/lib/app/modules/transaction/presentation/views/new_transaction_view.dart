@@ -5,7 +5,9 @@ import 'package:transaction_app/app/core/services/nofitication_service.dart';
 import 'package:transaction_app/app/core/utils/alphanumeric_input_formatter.dart';
 import 'package:transaction_app/app/core/utils/max_length_input_formatter.dart';
 import 'package:transaction_app/app/core/utils/money_input_formatter.dart';
+import 'package:transaction_app/app/core/utils/number_formatter.dart';
 import 'package:transaction_app/app/core/widgets/custom_text_error.dart';
+import 'package:transaction_app/app/modules/transaction/domain/entities/transaction_entity.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/store/new_transaction_store.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/store/transaction_store.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/widgets/custom_buttom.dart';
@@ -13,7 +15,8 @@ import 'package:transaction_app/app/modules/transaction/presentation/widgets/cus
 import 'package:transaction_app/app/modules/transaction/presentation/widgets/custom_text_filed.dart';
 
 class NewTransactionView extends StatefulWidget {
-  const NewTransactionView({super.key});
+  final TransactionEntity? transaction;
+  const NewTransactionView({super.key, this.transaction});
 
   @override
   State<NewTransactionView> createState() => _NewTransactionViewState();
@@ -21,22 +24,38 @@ class NewTransactionView extends StatefulWidget {
 
 class _NewTransactionViewState extends State<NewTransactionView> {
   late final NewTransactionStore store;
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController amountController = TextEditingController();
+  DateTime? initialDate;
 
   @override
   void initState() {
     store = Modular.get();
+    setInitialValues();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Nova Transação'),
-        centerTitle: true,
-        toolbarHeight: 100,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
+          return;
+        }
+        final doReload = await store.savePendingTransaction();
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => Navigator.pop(context, doReload),
+        );
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Nova Transação'),
+          centerTitle: true,
+          toolbarHeight: 100,
+        ),
+        body: SingleChildScrollView(child: _buildResponsiveForm()),
       ),
-      body: SingleChildScrollView(child: _buildResponsiveForm()),
     );
   }
 
@@ -84,6 +103,7 @@ class _NewTransactionViewState extends State<NewTransactionView> {
           builder: (context) {
             return CustomTextFiled(
               labelText: 'Descrição',
+              controller: descriptionController,
               errorText: store.descriptionError,
               onChanged: store.setDescription,
               inputFormatters: [
@@ -98,6 +118,7 @@ class _NewTransactionViewState extends State<NewTransactionView> {
           builder: (context) {
             return CustomTextFiled(
               labelText: 'Valor (USD)',
+              controller: amountController,
               isMoney: true,
               errorText: store.amountError,
               onChanged: store.setAmount,
@@ -112,6 +133,7 @@ class _NewTransactionViewState extends State<NewTransactionView> {
               labelText: 'Data',
               errorText: store.dateError,
               onChanged: store.setDate,
+              date: initialDate,
             );
           },
         ),
@@ -158,5 +180,20 @@ class _NewTransactionViewState extends State<NewTransactionView> {
         );
       },
     );
+  }
+
+  void setInitialValues() {
+    if (widget.transaction != null) {
+      descriptionController.text = widget.transaction!.description;
+      amountController.text = NumberFormatters.formatMoney(
+        widget.transaction!.amount,
+      );
+      initialDate = widget.transaction!.date;
+
+      store.pendingTransactionId = widget.transaction!.id;
+      store.setDescription(descriptionController.text);
+      store.setAmount(amountController.text);
+      store.setDate(initialDate!);
+    }
   }
 }

@@ -31,6 +31,7 @@ class CustomTextFiled extends StatelessWidget {
             : TextInputType.text;
 
     return TextField(
+      controller: controller,
       onChanged: onChanged ?? (value) {},
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,

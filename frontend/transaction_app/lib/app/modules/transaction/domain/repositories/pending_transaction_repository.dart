@@ -4,8 +4,8 @@ import 'package:transaction_app/app/modules/transaction/domain/entities/transact
 
 abstract class PendingTransactionRepository {
   Future<Result<List<TransactionEntity>>> getTransactions();
-  Future<Result<bool>> saveTransaction(TransactionEntity transaction);
+  Future<Result<bool>> createTransaction(TransactionEntity transaction);
   Future<Result<bool>> updateTransaction(TransactionEntity transaction);
   Future<Result<TransactionEntity>> getTransaction(int id);
-  Future<Result<TransactionEntity>> deleteTransaction(int id);
+  Future<Result<bool>> deleteTransaction(int id);
 }

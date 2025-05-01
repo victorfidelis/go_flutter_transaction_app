@@ -4,7 +4,6 @@ import 'package:transaction_app/app/modules/transaction/domain/repositories/pend
 
 class GetPendingTransactionsUsecase {
   final PendingTransactionRepository repository;
-
   GetPendingTransactionsUsecase(this.repository);
   
   Future<Result<List<TransactionEntity>>> call() async {

@@ -10,7 +10,7 @@ class PendingTransactionRepositoryImpl implements PendingTransactionRepository {
   PendingTransactionRepositoryImpl(this.datasource);
 
   @override
-  Future<Result<bool>> saveTransaction(TransactionEntity transaction) {
+  Future<Result<bool>> createTransaction(TransactionEntity transaction) {
     return datasource.saveTransaction(transaction);
   }
 
@@ -25,8 +25,8 @@ class PendingTransactionRepositoryImpl implements PendingTransactionRepository {
   }
   
   @override
-  Future<Result<TransactionEntity>> deleteTransaction(int id) {
-    return datasource.getTransaction(id);
+  Future<Result<bool>> deleteTransaction(int id) {
+    return datasource.deleteTransaction(id);
   }
   
   @override

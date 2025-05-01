@@ -24,8 +24,8 @@ class _CustomDateFieldState extends State<CustomDateField> {
 
   @override
   void initState() {
+    date = widget.date;
     super.initState();
-    date = date;
   }
 
   @override

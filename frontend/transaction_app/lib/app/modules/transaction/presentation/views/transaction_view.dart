@@ -83,8 +83,11 @@ class _TransactionViewState extends State<TransactionView> {
     );
   }
 
-  void goToNewTransaction() {
-    Modular.to.pushNamed('/new');
+  void goToNewTransaction() async {
+    bool? doReload = await Modular.to.pushNamed('/new');
+    if (doReload ?? false) {
+      store.loadTransations();
+    }
   }
 
   void goToTransactionDetail(TransactionEntity transaction) {

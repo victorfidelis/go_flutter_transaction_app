@@ -8,7 +8,10 @@ import 'package:transaction_app/app/modules/transaction/data/repositories/pendin
 import 'package:transaction_app/app/modules/transaction/data/repositories/transaction_repository_impl.dart';
 import 'package:transaction_app/app/modules/transaction/domain/repositories/pending_transaction_repository.dart';
 import 'package:transaction_app/app/modules/transaction/domain/repositories/transaction_repository.dart';
+import 'package:transaction_app/app/modules/transaction/domain/usecases/pending_transaction/delete_pending_transaction_usecase.dart';
 import 'package:transaction_app/app/modules/transaction/domain/usecases/pending_transaction/get_pending_transactions_usecase.dart';
+import 'package:transaction_app/app/modules/transaction/domain/usecases/pending_transaction/create_pending_transaction_usecase.dart';
+import 'package:transaction_app/app/modules/transaction/domain/usecases/pending_transaction/update_pending_transaction_usecase.dart';
 import 'package:transaction_app/app/modules/transaction/domain/usecases/transaction/create_transaction_usecase.dart';
 import 'package:transaction_app/app/modules/transaction/domain/usecases/transaction/get_transaction_usecase.dart';
 import 'package:transaction_app/app/modules/transaction/domain/usecases/transaction/get_transactions_usecase.dart';
@@ -17,7 +20,6 @@ import 'package:transaction_app/app/modules/transaction/presentation/store/pendi
 import 'package:transaction_app/app/modules/transaction/presentation/store/transaction_menu_store.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/store/transaction_store.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/views/new_transaction_view.dart';
-import 'package:transaction_app/app/modules/transaction/presentation/views/pending_transaction_view.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/views/transaction_detail_view.dart';
 import 'package:transaction_app/app/modules/transaction/presentation/views/transaction_menu.dart';
 
@@ -38,10 +40,9 @@ class TransactionModule extends Module {
     i.add<CreateTransactionUsecase>(
       () => CreateTransactionUsecase(Modular.get()),
     );
-    i.add<NewTransactionStore>(() => NewTransactionStore(Modular.get()));
     i.add<GetTransactionUsecase>(() => GetTransactionUsecase(Modular.get()));
 
-    // Dependências para dados locaiss
+    // Dependências para dados locais
     i.add<PendingTransactionDatasource>(
       () => PendingTransactionDatasourceSqflite(),
     );
@@ -54,12 +55,33 @@ class TransactionModule extends Module {
     i.addSingleton<PendingTransactionStore>(
       () => PendingTransactionStore(Modular.get()),
     );
+    i.add<CreatePendingTransactionUsecase>(
+      () => CreatePendingTransactionUsecase(Modular.get()),
+    );
+    i.add<UpdatePendingTransactionUsecase>(
+      () => UpdatePendingTransactionUsecase(Modular.get()),
+    );
+    i.add<DeletePendingTransactionUsecase>(
+      () => DeletePendingTransactionUsecase(Modular.get()),
+    );
+
+    // Store para criar uma nova transação
+    // Aqui também ocorrerá a gravação de transações pendentes de forma local
+    i.add<NewTransactionStore>(() {
+      return NewTransactionStore(
+        Modular.get(),
+        Modular.get(),
+        Modular.get(),
+        Modular.get(),
+      );
+    });
   }
 
   @override
   void routes(r) {
     r.child('/', child: (_) => TransactionMenu());
-    r.child('/new', child: (_) => NewTransactionView());
+    r.child('/new', child: (_) => 
+    NewTransactionView(transaction: r.args.data));
     r.child(
       '/detail',
       child: (_) => TransactionDetailView(transaction: r.args.data),

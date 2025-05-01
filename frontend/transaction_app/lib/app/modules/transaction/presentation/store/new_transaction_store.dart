@@ -1,5 +1,10 @@
 import 'package:mobx/mobx.dart';
+import 'package:transaction_app/app/core/result/result.dart';
+import 'package:transaction_app/app/core/result/result_extensions.dart';
 import 'package:transaction_app/app/modules/transaction/domain/entities/transaction_entity.dart';
+import 'package:transaction_app/app/modules/transaction/domain/usecases/pending_transaction/delete_pending_transaction_usecase.dart';
+import 'package:transaction_app/app/modules/transaction/domain/usecases/pending_transaction/create_pending_transaction_usecase.dart';
+import 'package:transaction_app/app/modules/transaction/domain/usecases/pending_transaction/update_pending_transaction_usecase.dart';
 import 'package:transaction_app/app/modules/transaction/domain/usecases/transaction/create_transaction_usecase.dart';
 
 part 'new_transaction_store.g.dart';
@@ -8,8 +13,19 @@ class NewTransactionStore = NewTransactionStoreBase with _$NewTransactionStore;
 
 abstract class NewTransactionStoreBase with Store {
   final CreateTransactionUsecase createTransactionUsecase;
+  final CreatePendingTransactionUsecase createPendingTransactionUsecase;
+  final UpdatePendingTransactionUsecase updatePendingTransactionUsecase;
+  final DeletePendingTransactionUsecase deletePendingTransactionUsecase;
 
-  NewTransactionStoreBase(this.createTransactionUsecase);
+  NewTransactionStoreBase(
+    this.createTransactionUsecase,
+    this.createPendingTransactionUsecase,
+    this.updatePendingTransactionUsecase,
+    this.deletePendingTransactionUsecase,
+  );
+
+  int pendingTransactionId = 0;
+  bool get _isPendingTransaction => pendingTransactionId > 0;
 
   @observable
   bool transactionSend = false;
@@ -24,7 +40,7 @@ abstract class NewTransactionStoreBase with Store {
     if (value.isEmpty) {
       amount = 0;
     } else {
-      amount = double.parse(value.replaceAll(',', '.'));
+      amount = double.parse(value.replaceAll('.', '').replaceAll(',', '.'));
     }
   }
 
@@ -52,6 +68,27 @@ abstract class NewTransactionStoreBase with Store {
   void setError(String? value) => error = value;
 
   Future<void> createTransaction() async {
+    if (hasError()) {
+      return;
+    }
+
+    final transaction = TransactionEntity(
+      description: description,
+      amount: amount,
+      date: date!,
+    );
+
+    createTransactionUsecase.call(transaction);
+
+    // Transação pendente deve ser excluída ao ser enviada
+    if (_isPendingTransaction) {
+      await deletePendingTransactionUsecase.call(pendingTransactionId);
+    }
+
+    setTransactionSend(true);
+  }
+
+  bool hasError() {
     Map<String, String> errors = {};
     if (date == null) {
       errors['date'] = "Informe um valor de data";
@@ -66,12 +103,9 @@ abstract class NewTransactionStoreBase with Store {
     errors.addAll(transaction.validateTransaction());
     if (errors.isNotEmpty) {
       _handleTextErrors(errors);
-      return;
+      return true;
     }
-
-    createTransactionUsecase.call(transaction);
-
-    setTransactionSend(true);
+    return false;
   }
 
   void _handleTextErrors(Map<String, String> errors) {
@@ -83,5 +117,28 @@ abstract class NewTransactionStoreBase with Store {
 
   void _resetGenericErrorsOnly() {
     setError(null);
+  }
+
+  // Salva a transação caso esteja valida e o usuário saia sem salvar
+  Future<bool> savePendingTransaction() async {
+    if (hasError()) {
+      return false;
+    }
+
+    final transaction = TransactionEntity(
+      id: pendingTransactionId,
+      description: description,
+      amount: amount,
+      date: date!,
+    );
+
+    final Result<bool> result;
+    if (_isPendingTransaction) {
+      result = await updatePendingTransactionUsecase.call(transaction);
+    } else {
+      result = await createPendingTransactionUsecase.call(transaction);
+    }
+
+    return result.isOk;
   }
 }

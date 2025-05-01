@@ -78,7 +78,10 @@ class _PendingTransactionViewState extends State<PendingTransactionView> {
     );
   }
 
-  void goToEditTransaction(TransactionEntity transaction) {
-    Modular.to.pushNamed('/new');
+  void goToEditTransaction(TransactionEntity transaction) async {
+    bool? doReload = await Modular.to.pushNamed('/new', arguments: transaction);
+    if (doReload ?? false) {
+      store.loadTransations();
+    }
   }
 }

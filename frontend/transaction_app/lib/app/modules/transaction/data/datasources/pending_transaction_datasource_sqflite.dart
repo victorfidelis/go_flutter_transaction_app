@@ -43,7 +43,6 @@ class PendingTransactionDatasourceSqflite
     }
 
     String deleteText =
-        ''
         'DELETE FROM '
         '$transactionsTable '
         'WHERE '
@@ -143,7 +142,7 @@ class PendingTransactionDatasourceSqflite
         "date, "
         "amount"
         ") "
-        "VALUES (?, ?, ?, ?)";
+        "VALUES (?, ?, ?)";
 
     final params = [
       transaction.description.trim(),
