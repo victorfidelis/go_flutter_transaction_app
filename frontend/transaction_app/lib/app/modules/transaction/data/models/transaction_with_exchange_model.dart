@@ -26,18 +26,4 @@ class TransactionWithExchangeModel extends TransactionWithExchangeEntity {
       effectiveDate: DateTime.parse(json['effective_date']),
     );
   }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'description': description,
-      'original_value': amount,
-      'date': date.toIso8601String(),
-      'country': country,
-      'currency': currency,
-      'exchange_rate': exchangeRate,
-      'converted_value': convertedAmount,
-      'effective_date': effectiveDate.toIso8601String(),
-    };
-  }
 }
