@@ -28,9 +28,9 @@ func NewExchangeClientImpl() *ExchangeClientImpl {
 
 func (e *ExchangeClientImpl) GetRate(
 	date time.Time,
-	country string,
+	currency string,
 ) (models.Exchange, error) {
-	filter := buildFilter(date, country)
+	filter := buildFilter(date, currency)
 	url := baseUrl + ratesEndpoint + "?" + pageNumber + "&" + pageSize + "&" +
 		fields + "&" + sort + "&" + filter
 
@@ -53,10 +53,10 @@ func (e *ExchangeClientImpl) GetRate(
 	return body.Data[0], nil
 }
 
-func buildFilter(date time.Time, country string) string {
+func buildFilter(date time.Time, currency string) string {
 	startDate := date.AddDate(0, -6, 0)
 	layout := "2006-01-02"
 	startDateStr := startDate.Format(layout)
 	endDateStr := date.Format(layout)
-	return "filter=country:eq:" + country + ",effective_date:gte:" + startDateStr + ",effective_date:lte:" + endDateStr
+	return "filter=currency:eq:" + currency + ",effective_date:gte:" + startDateStr + ",effective_date:lte:" + endDateStr
 }

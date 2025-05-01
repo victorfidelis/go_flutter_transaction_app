@@ -77,29 +77,29 @@ func (s *TransactionServiceImpl) GetAllTransactions() ([]models.Transaction, err
 	return transactions, nil
 }
 
-func (s *TransactionServiceImpl) GetTransactionWithExchangeByID(id int, country string) (models.TransactionWithExchange, error) {
-	log.Println("Iniciando serviço de busca de transação com câmbio.", "id:", id, "country:", country)
+func (s *TransactionServiceImpl) GetTransactionWithExchangeByID(id int, currency string) (models.TransactionWithExchange, error) {
+	log.Println("Iniciando serviço de busca de transação com câmbio.", "id:", id, "currency:", currency)
 	transaction, err := s.repository.GetTransactionByID(id)
 	if err != nil {
 		log.Println("Erro ao buscar transação.", "id:", id, "error:", err.Error())
 		return models.TransactionWithExchange{}, err
 	}
 
-	exchange, err := s.exchangeClient.GetRate(transaction.Date, country)
+	exchange, err := s.exchangeClient.GetRate(transaction.Date, currency)
 	if err != nil {
-		log.Println("Erro ao buscar taxa de câmbio.", "id:", id, "country:", country, "error:", err.Error())
+		log.Println("Erro ao buscar taxa de câmbio.", "id:", id, "currency:", currency, "error:", err.Error())
 		return models.TransactionWithExchange{}, err
 	}
 
 	effectiveDate, err := exchange.EffectiveDateParsed()
 	if err != nil {
-		log.Println("Erro ao parsear data efetiva.", "id:", id, "country:", country, "error:", err.Error())
+		log.Println("Erro ao parsear data efetiva.", "id:", id, "currency:", currency, "error:", err.Error())
 		return models.TransactionWithExchange{}, err
 	}
 
 	exchangeRate, err := exchange.ExchangeRateParse()
 	if err != nil {
-		log.Println("Erro ao parsear taxa de câmbio.", "id:", id, "country:", country, "error:", err.Error())
+		log.Println("Erro ao parsear taxa de câmbio.", "id:", id, "currency:", currency, "error:", err.Error())
 		return models.TransactionWithExchange{}, err
 	}
 

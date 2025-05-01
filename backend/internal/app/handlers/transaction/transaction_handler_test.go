@@ -198,10 +198,10 @@ func TestGetTransactionWithExchangeByID(t *testing.T) {
 
 		context, recorder, _ := testhelpers.BuildTestContextGin(
 			"GET",
-			"/transactions/1/Brazil",
+			"/transactions/1/Real",
 			nil,
 			gin.Param{Key: "id", Value: "1"},
-			gin.Param{Key: "country", Value: "Brazil"},
+			gin.Param{Key: "currency", Value: "Real"},
 		)
 
 		handler.GetTransactionWithExchangeByID(context)
@@ -229,10 +229,10 @@ func TestGetTransactionWithExchangeByID(t *testing.T) {
 
 		context, recorder, _ := testhelpers.BuildTestContextGin(
 			"GET",
-			"/transactions/1/USA",
+			"/transactions/1/dolar",
 			nil,
 			gin.Param{Key: "id", Value: "1"},
-			gin.Param{Key: "country", Value: "USA"},
+			gin.Param{Key: "currency", Value: "dolar"},
 		)
 
 		handler.GetTransactionWithExchangeByID(context)
@@ -246,10 +246,10 @@ func TestGetTransactionWithExchangeByID(t *testing.T) {
 
 		context, recorder, _ := testhelpers.BuildTestContextGin(
 			"GET",
-			"/transactions/invalid/USA",
+			"/transactions/invalid/dolar",
 			nil,
 			gin.Param{Key: "id", Value: "invalid"},
-			gin.Param{Key: "country", Value: "USA"},
+			gin.Param{Key: "currency", Value: "dolar"},
 		)
 
 		handler.GetTransactionWithExchangeByID(context)

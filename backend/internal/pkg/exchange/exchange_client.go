@@ -6,5 +6,5 @@ import (
 )
 
 type ExchangeClient interface {
-	GetRate(date time.Time, country string) (models.Exchange, error)
+	GetRate(date time.Time, currency string) (models.Exchange, error)
 }

@@ -90,8 +90,8 @@ func (h *TransactionHandler) GetTransactionWithExchangeByID(c *gin.Context) {
 		return
 	}
 
-	country := c.Params.ByName("country")
-	transaction, err := h.service.GetTransactionWithExchangeByID(id, country)
+	currency := c.Params.ByName("currency")
+	transaction, err := h.service.GetTransactionWithExchangeByID(id, currency)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
