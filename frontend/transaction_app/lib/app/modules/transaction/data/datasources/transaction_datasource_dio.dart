@@ -73,10 +73,10 @@ class TransactionDatasourceDio implements TransactionDatasource {
   @override
   Future<Result<TransactionWithExchangeEntity>> getTransaction(
     int id,
-    String country,
+    String currency,
   ) async {
     try {
-      final response = await dio.get('/transactions/$id/$country');
+      final response = await dio.get('/transactions/$id/$currency');
       if (response.statusCode == 200) {
         return Result.ok(TransactionWithExchangeModel.fromJson(response.data));
       } else {

@@ -15,8 +15,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<Result<TransactionWithExchangeEntity>> getTransaction(int id, String country) {
-    return datasource.getTransaction(id, country);
+  Future<Result<TransactionWithExchangeEntity>> getTransaction(int id, String currency) {
+    return datasource.getTransaction(id, currency);
   }
 
   @override

@@ -5,5 +5,5 @@ import 'package:transaction_app/app/modules/transaction/domain/entities/transact
 abstract class TransactionRepository {
   Future<Result<List<TransactionEntity>>> getTransactions();
   Future<Result<TransactionEntity>> createTransaction(TransactionEntity transaction);
-  Future<Result<TransactionWithExchangeEntity>> getTransaction(int id, String country);
+  Future<Result<TransactionWithExchangeEntity>> getTransaction(int id, String currency);
 }
