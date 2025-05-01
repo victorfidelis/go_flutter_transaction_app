@@ -28,7 +28,7 @@ class _TransactionMenuState extends State<TransactionMenu> {
       body: PageView(
         controller: store.pageController,
         physics: const NeverScrollableScrollPhysics(),
-        children: const [TransactionView(), PendingTransactionView()],
+        children: [TransactionView(), PendingTransactionView()],
       ),
       bottomNavigationBar: _buildBottomBar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

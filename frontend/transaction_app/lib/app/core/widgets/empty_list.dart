@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 
 class EmptyList extends StatelessWidget {
   final String message;
-  final Function() onAction;
-  final String actionText;
+  final Function()? onAction;
+  final String? actionText;
 
   const EmptyList({
     super.key,
     required this.message,
-    required this.onAction,
-    required this.actionText,
+    this.onAction,
+    this.actionText,
   });
+
+  bool get hasAction => onAction != null;
 
   @override
   Widget build(BuildContext context) {
@@ -29,15 +31,17 @@ class EmptyList extends StatelessWidget {
                 context,
               ).textTheme.titleMedium?.copyWith(color: Colors.blueGrey),
             ),
-            const SizedBox(height: 24),
-            OutlinedButton(
-              onPressed: onAction,
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.blueGrey,
-                side: BorderSide(color: Colors.blueGrey.shade300),
-              ),
-              child: Text(actionText),
-            ),
+            hasAction ? const SizedBox(height: 24) : const SizedBox(),
+            hasAction
+                ? OutlinedButton(
+                  onPressed: onAction,
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: Colors.blueGrey,
+                    side: BorderSide(color: Colors.blueGrey.shade300),
+                  ),
+                  child: Text(actionText ?? ''),
+                )
+                : const SizedBox(),
           ],
         ),
       ),

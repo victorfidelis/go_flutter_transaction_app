@@ -47,7 +47,7 @@ class SqfliteConfig {
     if (transactionQuantity == 0) {
       await database.execute(
         'CREATE TABLE $transactions ('
-        'id INT PRIMARY KEY AUTOINCREMENT, '
+        'id INTEGER PRIMARY KEY AUTOINCREMENT, '
         'description TEXT, '
         'date INT, '
         'amount REAL'
