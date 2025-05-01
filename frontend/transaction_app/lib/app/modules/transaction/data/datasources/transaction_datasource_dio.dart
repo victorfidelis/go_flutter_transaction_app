@@ -117,7 +117,11 @@ class TransactionDatasourceDio implements TransactionDatasource {
       if (e.type.name == 'connectionTimeout') {
         message =
             'O servidor não está respondendo. Entre em contato com o suporte.';
-      } else {
+      } else if (e.type.name == 'badResponse') {
+          message =
+            'Ocorreu uma falha inesperado no servidor. Entre em contato com o suporte.';
+      } 
+      else {
         message =
             'Um erro inesperado ocorreu ao buscar dados no servidor. Entre em contato com o suporte: ${e.message}';
       }

@@ -42,6 +42,6 @@ services:
   #   networks:
   #     - minha-rede
 
-networks:
-  minha-rede:
-    driver: bridge
+# networks:
+#   minha-rede:
+#     driver: bridge
