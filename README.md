@@ -116,6 +116,7 @@ Exemplo de corpo da requisição:
    `.\go_flutter_transaction_app`
 5. Execute:
    ```bash
+   docker-compose up --build -d
    docker-compose up --build
    ```
 6. A API estará disponível em `http://localhost:8080`
