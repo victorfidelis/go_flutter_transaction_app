@@ -104,7 +104,7 @@ Exemplo de corpo da requisição:
 
 ## Pré-requisitos
 
-- Docker e Docker Compose instalados
+- Docker instalado
 
 ## Como executar
 
@@ -117,6 +117,8 @@ Exemplo de corpo da requisição:
    ```
 5. A API estará disponível em `http://localhost:8080`
 6. Para cosultar a documentação da API acesse `http://localhost:8080/swagger/index.html`
+
+<img src="https://github.com/user-attachments/assets/dac6a093-7aaa-4f22-8b2a-475f7cb8f162" width="1000">
 
 ## Variáveis de Ambiente
 
