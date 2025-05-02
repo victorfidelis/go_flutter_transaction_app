@@ -108,14 +108,18 @@ Exemplo de corpo da requisição:
 ## Como executar
 
 1. Clone o repositório
+   ```bash
+   git clone https://github.com/victorfidelis/go_flutter_transaction_app.git
+   ```
 2. Abra o docker e o matenha aberto
 3. Navegue até o diretório do projeto
-4. Execute:
+   `.\go_flutter_transaction_app`
+5. Execute:
    ```bash
    docker-compose up --build
    ```
-5. A API estará disponível em `http://localhost:8080`
-6. Para cosultar a documentação da API acesse `http://localhost:8080/swagger/index.html`
+6. A API estará disponível em `http://localhost:8080`
+7. Para cosultar a documentação da API acesse `http://localhost:8080/swagger/index.html`
 
 <img src="https://github.com/user-attachments/assets/dac6a093-7aaa-4f22-8b2a-475f7cb8f162" width="1000">
 
