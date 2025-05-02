@@ -4,6 +4,7 @@ import (
 	handlers "backend/internal/app/handlers/transaction"
 
 	"github.com/gin-gonic/gin"
+	_ "github.com/swaggo/swag/example/celler/httputil"
 )
 
 func RegisterTransactionRoutes(router *gin.Engine, handler *handlers.TransactionHandler) {

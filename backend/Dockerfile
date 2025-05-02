@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . .
 
 RUN go mod download
-RUN go build -o /app/main ./cmd/app
+RUN go build -o /app/main .
 
 EXPOSE 8080
 

@@ -20,6 +20,17 @@ func NewTransactionHandler(service services.TransactionService) *TransactionHand
 	}
 }
 
+// CreateTransaction godoc
+// @Summary      Criar uma transação
+// @Description  Rota para criar uma nova transação
+// @Tags         transaction
+// @Accept       json
+// @Produce      json
+// @Param        transaction   body      models.Transaction  true  "Modelo de transação"
+// @Success      201  {object}  models.Transaction
+// @Failure      400  {object}  httputil.HTTPError
+// @Failure      500  {object}  httputil.HTTPError
+// @Router       /transactions [post]
 func (h *TransactionHandler) CreateTransaction(c *gin.Context) {
 	log.Println("Requisição recebida.", "path:", c.Request.URL.Path)
 	var transaction models.Transaction
@@ -40,6 +51,17 @@ func (h *TransactionHandler) CreateTransaction(c *gin.Context) {
 	c.JSON(http.StatusCreated, transaction)
 }
 
+// GetTransaction godoc
+// @Summary      Capturar uma transação
+// @Description  Rota para capturar uma nova transação
+// @Tags         transaction
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int  true  "Id da transação"
+// @Success      200  {object}  models.Transaction
+// @Failure      400  {object}  httputil.HTTPError
+// @Failure      500  {object}  httputil.HTTPError
+// @Router       /transactions/:id [get]
 func (h *TransactionHandler) GetTransaction(c *gin.Context) {
 	log.Println("Requisição recebida.", "path:", c.Request.URL.Path)
 	textId := c.Params.ByName("id")
@@ -64,6 +86,16 @@ func (h *TransactionHandler) GetTransaction(c *gin.Context) {
 	c.JSON(http.StatusOK, transaction)
 }
 
+// GetAllTransactions godoc
+// @Summary      Capturar todas as transações
+// @Description  Rota para capturar todas as transações
+// @Tags         transaction
+// @Accept       json
+// @Produce      json
+// @Success      200  {array}  models.Transaction
+// @Failure      400  {object}  httputil.HTTPError
+// @Failure      500  {object}  httputil.HTTPError
+// @Router       /transactions [get]
 func (h *TransactionHandler) GetAllTransactions(c *gin.Context) {
 	log.Println("Requisição recebida.", "path:", c.Request.URL.Path)
 	transactions, err := h.service.GetAllTransactions()
@@ -78,6 +110,18 @@ func (h *TransactionHandler) GetAllTransactions(c *gin.Context) {
 	c.JSON(http.StatusOK, transactions)
 }
 
+// GetTransaction godoc
+// @Summary      Capturar uma transação com a taxa da câmbio
+// @Description  Rota para capturar uma transação com a taxa da câmbio
+// @Tags         transaction
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int  true  "Id da transação"
+// @Param        currency   path      string  true  "Moeda"
+// @Success      200  {object}  models.TransactionWithExchange
+// @Failure      400  {object}  httputil.HTTPError
+// @Failure      500  {object}  httputil.HTTPError
+// @Router       /transactions/:id/:currency [get]
 func (h *TransactionHandler) GetTransactionWithExchangeByID(c *gin.Context) {
 	log.Println("Requisição recebida.", "path:", c.Request.URL.Path)
 	textId := c.Params.ByName("id")
