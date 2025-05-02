@@ -1,6 +1,6 @@
 # Transaction API
 
-Uma API simples para gerenciar transações financeiras com suporte a múltiplas moedas, construída em Go com o framework Gin e PostgreSQL.
+Uma API simples para gerenciar transações financeiras com suporte a múltiplas moedas, construída em Go com o framework Gin, PostgreSQL e GORM.
 
 ## Estrutura do Projeto
 
@@ -116,6 +116,7 @@ Exemplo de corpo da requisição:
    docker-compose up --build
    ```
 5. A API estará disponível em `http://localhost:8080`
+6. Para cosultar a documentação da API acesse `http://localhost:8080/swagger/index.html`
 
 ## Variáveis de Ambiente
 
