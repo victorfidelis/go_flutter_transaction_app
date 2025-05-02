@@ -119,6 +119,16 @@ Exemplo de corpo da requisição:
 
 <img src="https://github.com/user-attachments/assets/dac6a093-7aaa-4f22-8b2a-475f7cb8f162" width="1000">
 
+## PgAdmin (PostgreSQL) 
+
+1. Para acessar PgAdmin do PostgreSQL acesse `http://localhost:54321/` e informe o email `fideliscorrea.victor@gmail.com` e a senha `pass123`
+2. Acesse a linha de comando do container 'postgres' digite `hostname i` e capture o ip apresentado
+3. Para acessar o banco pelo pgAdmin informe as seguintes credenciais:
+   `hostname: [ip capturado no container postgres]`
+   `database: root`
+   `username: root`
+   `senha: pass123`
+
 ## Variáveis de Ambiente
 
 O arquivo `.env` já consta na aplicação para facilitar os testes:
@@ -183,15 +193,17 @@ Aplicativo mobile desenvolvido em Flutter para gerenciamento de transações fin
 
 1. **Listagem de transações**
 
-2. **Detalhes da transação**
+2. **Armazenamento local de transações pendentes**
+
+3. **Detalhes da transação**
    - Visualização completa dos dados
    - Conversão de moeda
 
-3. **Criação de novas transações**
+4. **Criação de novas transações**
    - Formulário com validação
    - Feedback visual
 
-4. **Gerenciamento de estado**
+5. **Gerenciamento de estado**
    - Atualização em tempo real
    - Tratamento de erros
 
@@ -227,9 +239,13 @@ Aplicativo mobile desenvolvido em Flutter para gerenciamento de transações fin
 
 ## Configuração da API
 
-O aplicativo está configurado para sempre utilizar a rede local através do emulador. Caso precise alterar esse dado acesse:
+O aplicativo está configurado para acessar a API através do emulador. Caso queria executar em um disposivo físico adicione o IP da máquina em que a API está sendo executada no seguinte arquivo:
 ```
-lib/app/core/config/api_config.dart
+lib/app/core/config/dio_config.dart
+```
+Basta alterar o valor da seguinte variável para o IP da máquina em que a API está rodando: 
+```
+const deviceApiIp = '10.0.2.2'; 
 ```
 
 ## Testes
