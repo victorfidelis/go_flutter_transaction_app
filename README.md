@@ -1,4 +1,4 @@
-# Transaction API
+# API de Transações
 
 Uma API simples para gerenciar transações financeiras com suporte a múltiplas moedas, construída em Go com o framework Gin, PostgreSQL e GORM.
 
@@ -148,7 +148,7 @@ go test ./...
 ```
 
 
-# Aplicativo Flutter - Gerenciamento de Transações Financeiras
+# Aplicativo Flutter - Gerenciamento de Transações 
 
 ## Visão Geral
 Aplicativo mobile desenvolvido em Flutter para gerenciamento de transações financeiras, conectado à API backend em Go. A aplicação segue os princípios de Clean Architecture, SOLID e Clean Code, utilizando MobX para gerenciamento de estado e Flutter Modular para injeção de dependências e roteamento.
