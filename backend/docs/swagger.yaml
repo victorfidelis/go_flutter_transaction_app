@@ -97,7 +97,7 @@ paths:
       summary: Criar uma transação
       tags:
       - transaction
-  /transactions/:id:
+  /transactions/{id}:
     get:
       consumes:
       - application/json
@@ -126,7 +126,7 @@ paths:
       summary: Capturar uma transação
       tags:
       - transaction
-  /transactions/:id/:currency:
+  /transactions/{id}/{currency}:
     get:
       consumes:
       - application/json

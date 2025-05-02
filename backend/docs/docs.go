@@ -97,7 +97,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/transactions/:id": {
+        "/transactions/{id}": {
             "get": {
                 "description": "Rota para capturar uma nova transação",
                 "consumes": [
@@ -141,7 +141,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/transactions/:id/:currency": {
+        "/transactions/{id}/{currency}": {
             "get": {
                 "description": "Rota para capturar uma transação com a taxa da câmbio",
                 "consumes": [

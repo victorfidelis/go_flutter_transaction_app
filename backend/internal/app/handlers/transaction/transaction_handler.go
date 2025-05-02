@@ -61,7 +61,7 @@ func (h *TransactionHandler) CreateTransaction(c *gin.Context) {
 // @Success      200  {object}  models.Transaction
 // @Failure      400  {object}  httputil.HTTPError
 // @Failure      500  {object}  httputil.HTTPError
-// @Router       /transactions/:id [get]
+// @Router       /transactions/{id} [get]
 func (h *TransactionHandler) GetTransaction(c *gin.Context) {
 	log.Println("Requisição recebida.", "path:", c.Request.URL.Path)
 	textId := c.Params.ByName("id")
@@ -121,7 +121,7 @@ func (h *TransactionHandler) GetAllTransactions(c *gin.Context) {
 // @Success      200  {object}  models.TransactionWithExchange
 // @Failure      400  {object}  httputil.HTTPError
 // @Failure      500  {object}  httputil.HTTPError
-// @Router       /transactions/:id/:currency [get]
+// @Router       /transactions/{id}/{currency} [get]
 func (h *TransactionHandler) GetTransactionWithExchangeByID(c *gin.Context) {
 	log.Println("Requisição recebida.", "path:", c.Request.URL.Path)
 	textId := c.Params.ByName("id")
