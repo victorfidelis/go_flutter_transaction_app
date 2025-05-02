@@ -237,3 +237,10 @@ Para executar os testes:
 flutter test
 ```
 
+## 🖼️ Capturas de Tela 
+
+<img src="https://github.com/user-attachments/assets/1143f366-16f5-49fc-b4b5-0b3f83742367" width="250">
+<img src="https://github.com/user-attachments/assets/7ff4651e-8f8b-43a1-87d1-0f41db54d1dc" width="250">
+<img src="https://github.com/user-attachments/assets/b6ba111d-f0ca-4766-a195-55cc12261938" width="250">
+<img src="https://github.com/user-attachments/assets/a761212f-eaac-4cde-858d-0c87a10c424d" width="250">
+
