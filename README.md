@@ -129,7 +129,7 @@ Exemplo de corpo da requisição:
 2. Acesse a linha de comando do container 'postgres' digite `hostname i` e capture o ip apresentado
 3. Para acessar o banco pelo pgAdmin informe as seguintes credenciais:
    `hostname: [ip capturado no container postgres]`
-   `database: root`
+   `database: postgres`
    `username: root`
    `senha: pass123`
 
