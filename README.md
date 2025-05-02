@@ -130,4 +130,110 @@ go test ./...
 ```
 
 
+# Aplicativo Flutter - Gerenciamento de Transações Financeiras
+
+## Visão Geral
+Aplicativo mobile desenvolvido em Flutter para gerenciamento de transações financeiras, conectado à API backend em Go. A aplicação segue os princípios de Clean Architecture, SOLID e Clean Code, utilizando MobX para gerenciamento de estado e Flutter Modular para injeção de dependências e roteamento.
+
+## Estrutura do Projeto
+
+```
+/frontend
+└── /lib                    
+    ├── main.dart                      # Ponto de entrada da aplicação
+    └── /app                           # Núcleo da aplicação
+        ├── /core                      # Recursos compartilhados
+        │   ├── /config                # Configurações gerais
+        │   ├── /constants             # Constantes da aplicação
+        │   ├── /errors                # Classes de erro personalizadas
+        │   ├── /result                # Modelo de resultado padronizado
+        │   ├── /services              # Serviços globais
+        │   ├── /utils                 # Utilitários
+        │   └── /widgets               # Widgets reutilizáveis
+        └── /modules                   # Módulos da aplicação
+            └── /transaction           # Módulo de transações
+                ├── /domain            # Camada de domínio
+                │   ├── /entities      # Entidades do negócio
+                │   ├── /repository    # Contratos de repositório
+                │   ├── /usecases      # Casos de uso
+                │   └── /errors        # Erros específicos do domínio
+                ├── /data              # Camada de dados
+                │   ├── /models        # Modelos de dados
+                │   ├── /datasources   # Fontes de dados (local/remoto)
+                │   └── /repository    # Implementação dos repositórios
+                └── /presentation      # Camada de apresentação
+                    ├── /store         # Stores MobX
+                    ├── /views         # Páginas/componentes
+                    └── /widgets       # Widgets específicos do módulo
+```
+
+## Tecnologias e Padrões Utilizados
+
+- **Flutter**: Framework para desenvolvimento multiplataforma
+- **MobX**: Gerenciamento de estado reativo
+- **Flutter Modular**: Injeção de dependências e roteamento
+- **Clean Architecture**: Separação em camadas (domain, data, presentation)
+- **SOLID**: Princípios de design de software
+- **Repository Pattern**: Padrão para acesso a dados
+- **Dependency Injection**: Inversão de controle
+
+## Funcionalidades
+
+1. **Listagem de transações**
+
+2. **Detalhes da transação**
+   - Visualização completa dos dados
+   - Conversão de moeda
+
+3. **Criação de novas transações**
+   - Formulário com validação
+   - Feedback visual
+
+4. **Gerenciamento de estado**
+   - Atualização em tempo real
+   - Tratamento de erros
+
+## Configuração do Ambiente
+
+### Pré-requisitos
+
+- Flutter SDK 
+- Dart SDK 
+- Emulador Android configurado
+
+### Como Executar
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/victorfidelis/go_flutter_transaction_app.git
+   ```
+
+2. Navegue até o diretório do projeto:
+   ```bash
+   cd frontend
+   ```
+
+3. Instale as dependências:
+   ```bash
+   flutter pub get
+   ```
+
+4. Execute o aplicativo:
+   ```bash
+   flutter run
+   ```
+
+## Configuração da API
+
+O aplicativo está configurado para sempre utilizar a rede local através do emulador. Caso precise alterar esse dado acesse:
+```
+lib/app/core/config/api_config.dart
+```
+
+## Testes
+
+Para executar os testes:
+```bash
+flutter test
+```
 
