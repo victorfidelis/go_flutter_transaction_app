@@ -121,7 +121,7 @@ Exemplo de corpo da requisição:
 
 ## PgAdmin (PostgreSQL) 
 
-1. Para acessar PgAdmin do PostgreSQL acesse `http://localhost:54321/` e informe o email `fideliscorrea.victor@gmail.com` e a senha `pass123`
+1. Para acessar PgAdmin do PostgreSQL acesse `http://localhost:54321/`, informe o email `fideliscorrea.victor@gmail.com` e a senha `pass123`
 2. Acesse a linha de comando do container 'postgres' digite `hostname i` e capture o ip apresentado
 3. Para acessar o banco pelo pgAdmin informe as seguintes credenciais:
    `hostname: [ip capturado no container postgres]`
