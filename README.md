@@ -119,8 +119,9 @@ Exemplo de corpo da requisição:
    docker-compose up --build -d
    docker-compose up --build
    ```
-6. A API estará disponível em `http://localhost:8080`
-7. Para cosultar a documentação da API acesse `http://localhost:8080/swagger/index.html`
+6. Em testes foi identificado que vez ou outra ocorre um erro na inicialização do postgreSQL. Verifique se a API foi carregada corretamente acessando `http://localhost:8080/transactions`. Se for apresentado `[]` a API está funcionando normalmente. Caso apresente um erro, execute o passo 5 novamente. 
+7. API estará disponível em `http://localhost:8080`
+8. Para cosultar a documentação da API acesse `http://localhost:8080/swagger/index.html`
 
 <img src="https://github.com/user-attachments/assets/dac6a093-7aaa-4f22-8b2a-475f7cb8f162" width="1000">
 
