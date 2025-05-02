@@ -230,7 +230,7 @@ Aplicativo mobile desenvolvido em Flutter para gerenciamento de transações fin
 
 2. Navegue até o diretório do projeto:
    ```bash
-   cd frontend
+   cd frontend/transaction_app
    ```
 
 3. Instale as dependências:
