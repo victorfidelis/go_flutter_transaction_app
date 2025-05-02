@@ -9,8 +9,7 @@ Foi usada uma arquitetura comum em projetos Go que segue conceito de Clean Code,
 
 ```
 /backend
-├── /cmd                    # Ponto de entrada da aplicação 
-│   └── /app                # Aplicação principal (`main.go`)
+├── main.go                 # Aplicação principal
 ├── /internal               # Código interno (não importável por outros projetos)
 │   ├── /app                # Lógica da aplicação (regras de negócio)
 │   │   ├── /handlers       # HTTP handlers
